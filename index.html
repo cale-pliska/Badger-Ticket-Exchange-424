@@ -1,0 +1,202 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BadgerExchange</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--NAV BAR    -->
+    <div class="navbar nav_color ">
+        <div class="navbar-brand">
+                <div class="navbar-item">
+                 <a><img src="color-flush-reverse-UWlogo-print.png" width="" height=""></a>
+                    
+            </div>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <!--DROP DOWN MENU ON SPORTS-->
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <div class="navbar-item">
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link has-text-weight-bold has-text-white"> Sports</a>
+                        <div class="navbar-dropdown is-boxed">
+                            <a class="navbar-item " href="   ">Men's Basketball</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="   ">Men's Football</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="   ">Men's Soccer</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="   ">Women's Basketball</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="   ">Womens's Soccer</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="navbar-item has-text-weight-bold">
+                    <a class ="has-text-weight-bold has-text-white">Tickets</a>
+                </div>
+                <!--CAN REMOVE THIS JUST ADDED FOR ANOTHER TAB on LEFT SIDE-->
+                <div class="navbar-item has-text-white">
+                    <a class ="has-text-weight-bold has-text-white">Contact Us</a>
+                </div>
+            </div>
+            <div class="navbar-end">
+                
+                <div class="navbar-item  has-text-weight-bold">
+                    <a class = "has-text-weight-bold has-text-white" id="loginbutton">Login</a>
+                </div>
+                <div class="navbar-item  has-text-weight-bold">
+                    <a class = "has-text-weight-bold has-text-white" >Sign-Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--MIDDLE SECTION TITLE && Maybe CARDS for each post?-->
+    <div class="section ">
+        <h1 class="is-size-3 has-text-weight-bold badger_title">Badger Exchange</h1>
+        <div>
+            <p class="container has-text-centered">Upcoming UW-Madison Sports Games</p>
+        </div>
+
+
+            <div class="container">
+                <div class="columns">
+                    <!--Main content-->
+                    <div class="section column is-12 p-6">
+                        <div class="card">
+                            <div class = "card-image has-text-centered">
+                                <p class = "title_game">Men's Basketball UW-Madison vs University of North Carolina</p>
+                            </div>
+                            <div class="card-content">
+
+                                <!--TODO I think we need a flexbox in this to algin date, buttons and price-->
+
+                
+
+
+                                <div class = "has-text-left">
+                                    <p class = "post_dates">FRI</p>
+                                    <p>MAR 19, 2021</p>
+
+                                </div>
+                                <div class = "post_buttons">
+                                    <button>BUY</button>
+                                    <button>SELL</button>
+
+                                    <p>I think need a flexbox to align date, buttons and price</p>
+                                    <p>
+                                        Need this center for buttons and up a litle bit   </p>    
+                                </div>
+                                <div class = "price">
+                                    Current Price: where is this
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="card mt-4">
+                            <div class = "card-image has-text-centered">
+                                <p class = "title_game">Men's Basketball UW-Madison vs Baylor</p>
+                            </div>
+                            <div class="card-content">
+
+                                <!--TODO I think we need a flexbox in this to algin date, buttons and price-->
+
+
+                                <div class = "has-text-left">
+                                    <p class = "post_dates">SUN</p>
+                                    <p>MAR 21, 2021</p>
+
+                                </div>
+                                <div class = "post_buttons">
+                                    <button>BUY</button>
+                                    <button>SELL</button>
+                                    <p>
+                                        Need this center for buttons and up a litle bit   </p>    
+                                </div>
+                                <div class = "price">
+                                    where is this: 
+                                    current price
+                                </div>
+                                
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+
+
+    <!-- MAY have gotten ahead of myself by this is for login tab-->
+    <div class="modal" id = "mymodal">
+        <div class="modal-background" id = "modalbg"></div>
+        <div class="modal-content p-6 has-background-white">
+            <h1 class="has-size-3 title">Login!</h1>
+            <form>
+                <!--wisc.edu email-->
+                <div class="field">
+                    <label class="label">Wisc Email</label>
+                    <div class="control">
+                        <input type="text" name="" id="">
+                    </div>
+                </div>
+                <!--Password-->
+                <div class="field">
+                    <label class="label">Password</label>
+                    <div class="control">
+                        <input type="text" name="" id="">
+
+                    </div>
+                </div>
+                <!-- Submit  -->
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="m3 button is-link">submit</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>  
+    
+
+
+    <div class="footer">
+            <div class="content has-text-centered footer_style">
+                <p>UW-Madison Badger Exchange</p>  
+            </div>
+        </div>
+
+     
+    <!-- LOGIN TAB SCRIPTS may be changed for different Javascript-->
+    <script>
+
+    var mybutton = document.querySelector("#loginbutton");
+    mybutton.addEventListener('click', function(){
+       //grab model
+       var mymodal = document.querySelector("#mymodal");
+       mymodal.classList.add('is-active');
+    })
+
+    var modalbg = document.querySelector("#modalbg");
+    modalbg.addEventListener('click', function() {
+        mymodal.classList.remove('is-active');
+    })
+    </script>
+
+</body>
+
+
+</html>

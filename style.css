@@ -1,0 +1,32 @@
+.nav_color{
+    background-color:#c5050c;
+}
+.badger_title{
+    font-style: italic;
+    background-color:lightgrey;
+    border: 2px solid black;
+    text-align: center;
+}
+.footer_style{
+    background-color: #c5050c;
+    font-style: italic;
+    font-weight: bold;
+    color: white;
+
+}
+.title_game{
+    font-weight: bolder;
+    margin-top:1%;
+}
+.post_dates{
+    font-weight: bold;
+    color: #c5050c;
+    margin-left: 3%;
+    font-size: larger;
+}
+.post_buttons{
+    text-align: center;
+}
+.price{
+    text-align:right;
+}
