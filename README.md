@@ -1,6 +1,6 @@
 # Badger Exchange: IS424_group9
 
 User Stories:
-1. As the UW ticket Sales department I want a website that is interactive with the user that looks professional and matches other UW website layout/design.
-2. As an admin, I want to be able to login and post ticket sales for an upcoming sport games.
-3. As a user, I want an interface that is simple and easy to use that will allow me to either buy or sell tickets in the most efficient way possible for upcoming badger games. 
+1. ADMIN -As the UW ticket sales department, I want an official-looking website that is secure and convenient in order to optimize the ticket exchange experience for Wisconsin students
+2. SELLER, I want a homepage where I can view ‘events’ so that I can sell my tickets to games.
+3. BUYER, I want a homepage where I can view ‘events’ so that I can buy tickets to games securely and safely.
