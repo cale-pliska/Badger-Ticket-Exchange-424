@@ -60,4 +60,32 @@ Bryan: Getting a hang of php still and designing the database with ER diagrams
 Tomas: None
 
 
+What did you learn from doing our first sprint?
+Need to be very specific about planning tasks.
+Must communicate on a daily basis to keep each other up to date on progression.
+What did go well? Why?
+We are off to a strong start. We have a strong grasp of the scope of the project and what needs to happen to execute our vision.
+The diagrams we created provided an excellent framework for Sprint 1.
+The website layout is very intuitive and well designed. We wanted to create a website that would be easy and convenient to use.
+The website interface looks very professional and legitimate. Gus utilized online design resources from UW-Madison to build an official-looking website that features official UW colors and logos
+What didn’t go well? Why not?
+The Burndown chart was not a strong tool for this sprint. The tasks were not specific enough, and we did not communicate enough to keep it updated on a daily basis.
+Our daily communication was sometimes impeded. Some of us were out of town for personal reasons at different points throughout the sprint
+How can you make things better next time?
+We must focus more attention on planning. We need to be more specific with details about taks and timing. This will allow us to track our progress better so hopefully we can deliver a more comprehensive project.
+We must keep each other accountable to delivering what is expected of us in our specific roles
+Are you satisfied with what you already completed
+Yes. We have a great idea of how our project will be structured. The next sprints will be about refining it and implementing it.
+
+
+Are you satisfied with what you already completed?
+Which group was invited? Everybody was present?
+
+We met with group 3, everyone was present. They talked about their idea is to partner students with emotional support animals during exams and stress relief during the semester we also discussed their burndown chart and we shared user stories. 
+
+
+
+
+
+
 
