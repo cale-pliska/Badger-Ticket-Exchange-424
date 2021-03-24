@@ -27,7 +27,7 @@ Tomas: None currently
 
 **Daily Scrum 3/19:**
 
-_What did you do yesterday
+_What did you do yesterday:_
 Gus: Worked on HTML /CSS for GUI on homepage
 Bryan: Went over PHP, started to brainstorm how we can implement it into project
 Cale: Level 1 Context diagram
