@@ -79,8 +79,9 @@ Yes. We have a great idea of how our project will be structured. The next sprint
 
 
 Are you satisfied with what you already completed?
-Which group was invited? Everybody was present?
+We are satisfied with our first sprint cycle. I think we got a good understanding of what to do on the next sprint cycle and got a good base of our project done.
 
+Which group was invited? Everybody was present?
 We met with group 3, everyone was present. They talked about their idea is to partner students with emotional support animals during exams and stress relief during the semester we also discussed their burndown chart and we shared user stories. 
 
 
