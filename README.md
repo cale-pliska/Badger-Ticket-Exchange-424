@@ -2,8 +2,22 @@
 
 **User Stories:**
 1. ADMIN -As the UW ticket sales department, I want an official-looking website that is secure and convenient in order to optimize the ticket exchange experience for Wisconsin students
-2. SELLER, I want a homepage where I can view ‘events’ so that I can sell my tickets to games.
-3. BUYER, I want a homepage where I can view ‘events’ so that I can buy tickets to games securely and safely.
+Tasks:
+Create a secure admin LOGIN
+Allow admin to create ‘events’ that will appear on the buyer and seller pages
+Allow admin to remove outdated ‘events’ from homepage
+Design web page with official Wisconsin colors and theme
+
+
+3. SELLER, I want a homepage where I can view ‘events’ so that I can sell my tickets to games.
+Tasks:
+Create a SIGN UP page to register new buyers and seller information: 
+name, email (verifies @wisc.edu email address), password
+Create secure LOGIN for users
+Allow sellers to click a SELL button and create ‘listings’ under ‘events’ with asking price, preferred exchange location, preferred payment method, preferred contact, and any additional information.
+Allow buyers to click a BUY button and browse ‘listings’
+Allow sellers to mark their listings as sold once the transaction is complete
+
 
 **Daily Scrum 3/17:**
 
