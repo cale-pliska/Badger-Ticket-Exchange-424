@@ -7,6 +7,9 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link rel="stylesheet" href="style.css">
+    
+    <!-- WILL NEED TO MOVE JS TO OWN FILE SOON-->
+    <script src="index.js"></script>
 
     
 </head>
@@ -50,7 +53,7 @@
                 </div>
                 <!--CAN REMOVE THIS JUST ADDED FOR ANOTHER TAB on LEFT SIDE-->
                 <div class="navbar-item has-text-white">
-                    <a class ="has-text-weight-bold has-text-white">Contact Us</a>
+                    <a class ="has-text-weight-bold has-text-white" id = "contact_button">Contact Us</a>
                 </div>
             </div>
             <div class="navbar-end">
@@ -59,7 +62,7 @@
                     <a class = "has-text-weight-bold has-text-white" id="loginbutton">Login</a>
                 </div>
                 <div class="navbar-item  has-text-weight-bold">
-                    <a class = "has-text-weight-bold has-text-white" >Sign-Up</a>
+                    <a class = "has-text-weight-bold has-text-white"id = sign_up_button >Sign-Up</a>
                 </div>
             </div>
         </div>
@@ -126,33 +129,104 @@
     <!-- MAY have gotten ahead of myself by this is for login tab-->
     <div class="modal" id = "mymodal">
         <div class="modal-background" id = "modalbg"></div>
-        <div class="modal-content p-6 has-background-white">
-            <h1 class="has-size-3 title">Login!</h1>
+        <div class="modal-content as-background-dark-light p-6 has-text-centered">
+            <h1 class="has-size-3 title has-text-white">Login!</h1>
             <form>
                 <!--wisc.edu email-->
                 <div class="field">
-                    <label class="label">Wisc Email</label>
+                    <label class="label has-text-white">Wisc Email</label>
                     <div class="control">
                         <input type="text" name="" id="">
                     </div>
                 </div>
                 <!--Password-->
                 <div class="field">
-                    <label class="label">Password</label>
+                    <label class="label has-text-white">Password</label>
                     <div class="control">
                         <input type="text" name="" id="">
-
+                    </div>
+                </div>
+                <!--ADMIN YES or NO-->
+                <div class="field">
+                    <label class = "checkbox has-text-white">
+                        <input type="checkbox" name="admin" id="admin_login">
+                        Admin: Yes or No</label>
+                    <div class="control">
                     </div>
                 </div>
                 <!-- Submit  -->
-                <div class="field is-grouped">
+                <div class="field has-text-centered">
                     <div class="control">
                         <button class="m3 button is-link">submit</button>
                     </div>
                 </div>
-                
             </div>
         </div>  
+
+        <div class="modal" id="my_sign_up_modal">
+            <div class="modal-background" id="modalbg_sign_up"></div>
+            <div class="modal-content p-6 has-background-dark-light has-text-centered">
+                <h1 class="has-size-3 title has-text-white">Sign-up!</h1>
+                <form>
+                    <!--WiscEmail-->
+                    <div class="field">
+                        <label class="label has-text-white">WiscEmail</label>
+                        <div class="control">
+                            <input type="text" name="" id="">
+                        </div>
+                    </div>
+                    <!--First NAME  -->
+                    <div class="field">
+                        <label class="label has-text-white">First Name</label>
+                        <div class="control">
+                            <input type="text" name="" id="">
+                        </div>
+                    </div>
+                     <!--Last NAME  -->
+                     <div class="field">
+                        <label class="label has-text-white">Last Name</label>
+                        <div class="control">
+                            <input type="text" name="" id="">
+                        </div>
+                    </div>
+                    <!--UserNAME  -->
+                    <div class="field">
+                        <label class="label has-text-white">Username</label>
+                        <div class="control">
+                            <input type="text" name="" id="">
+                        </div>
+                    </div>
+                    <!--Password-->
+                    <div class="field">
+                        <label class="label has-text-white">Password</label>
+                        <div class="control">
+                            <input type="text" name="" id="">
+                        </div>
+                    </div>
+                    <!-- Submit  -->
+                    <div class="has-text-centered">
+                        <div class="control m-3">
+                            <button class="m-3 button is-link">Create Account</button>
+                        </div>
+                    </div>
+                    <div class="content has-text-centered">
+                        <a class="has-text-centered"><img src="color-center-reverse-UWlogo-print.png" width="80" height="90"></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal" id="my_contact_modal">
+            <div class="modal-background" id="modalbg_contact"></div>
+            <div class="modal-content p-6 has-background-primary-light has-text-centered">
+                <h1 class="has-size-3 title">Contact Us!</h1>
+                <form>
+                    <p>
+                        <a href="mailto:wkalivas@wisc.edu?cc=cpliska@wisc.edu&subject=BadgerExchange Inquiry">Send us an email!</a>
+                    </p>
+                </form>
+            </div>
+        </div>
     
 
     <div class="footer">
@@ -161,9 +235,11 @@
             </div>
         </div>
 
-     
+    <script src="index.js"></script>
+
+    
     <!-- LOGIN TAB SCRIPTS may be changed for different Javascript-->
-    <script>
+    <!-- <script>
 
     var mybutton = document.querySelector("#loginbutton");
     mybutton.addEventListener('click', function(){
@@ -176,7 +252,30 @@
     modalbg.addEventListener('click', function() {
         mymodal.classList.remove('is-active');
     })
-    </script>
+
+    var my_contact_button = document.querySelector("#contact_button");
+    my_contact_button.addEventListener('click', function () {
+    var my_contact_modal = document.querySelector("#my_contact_modal");
+    my_contact_modal.classList.add('is-active');
+})
+
+var modalbg_contact = document.querySelector("#modalbg_contact");
+modalbg_contact.addEventListener('click', function () {
+    my_contact_modal.classList.remove('is-active');
+})
+
+// sign up button
+var my_sign_up_button = document.querySelector("#sign_up_button");
+my_sign_up_button.addEventListener('click', function () {
+    var my_sign_up_modal = document.querySelector("#my_sign_up_modal");
+    my_sign_up_modal.classList.add('is-active');
+})
+
+var modalbg_sign_up = document.querySelector("#modalbg_sign_up");
+modalbg_sign_up.addEventListener('click', function () {
+    my_sign_up_modal.classList.remove('is-active');
+})
+    </script> -->
 
 </body>
 
