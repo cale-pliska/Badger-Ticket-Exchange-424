@@ -4,6 +4,7 @@
 .badger_title{
     font-style: italic;
     background-color:lightgrey;
+    color: #c5050c;
     border: 2px solid black;
     text-align: center;
 }
@@ -16,10 +17,12 @@
 }
 .title_game{
     font-weight: bolder;
+    color: #c5050c;
     margin-top:1%;
 }
 .post_dates{
     font-weight: bold;
+    font-style: italic;
     color: #c5050c;
     margin-left: 3%;
     font-size: larger;
@@ -29,4 +32,5 @@
 }
 .price{
     text-align:right;
+    font-weight: bolder;
 }
