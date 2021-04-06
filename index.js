@@ -32,3 +32,15 @@ var modalbg_sign_up = document.querySelector("#modalbg_sign_up");
 modalbg_sign_up.addEventListener('click', function () {
 my_sign_up_modal.classList.remove('is-active');
 })
+
+//PROFILE
+var my_profile_button = document.querySelector("#my_profile_button");
+my_profile_button.addEventListener('click', function() {
+    var my_profile_modal = document.querySelector("#my_profile_modal");
+    my_profile_modal.classList.add('is-active');
+})
+
+var modalbg_profile = document.querySelector("#modalbg_profile");
+modalbg_profile.addEventListener('click', function() {
+    my_profile_modal.classList.remove('is-active');
+})

@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="navbar-item has-text-weight-bold">
-                    <a class ="has-text-weight-bold has-text-white">My Profile</a>
+                    <a class ="has-text-weight-bold has-text-white" id = "my_profile_button">My Profile</a>
                 </div>
                 <!--CAN REMOVE THIS JUST ADDED FOR ANOTHER TAB on LEFT SIDE-->
                 <div class="navbar-item has-text-white">
@@ -123,9 +123,8 @@
         </div>
         
         
+    
 
-
-    <!-- MAY have gotten ahead of myself by this is for login tab-->
     <div class="modal" id = "mymodal">
         <div class="modal-background" id = "modalbg"></div>
         <div class="modal-content as-background-dark-light p-6 has-text-centered">
@@ -165,7 +164,7 @@
         <div class="modal" id="my_sign_up_modal">
             <div class="modal-background" id="modalbg_sign_up"></div>
             <div class="modal-content p-6 has-background-dark-light has-text-centered">
-                <h1 class="has-size-3 title has-text-white">Sign-up!</h1>
+                <h1 class="title has-text-white">Sign-up!</h1>
                 <form>
                     <!--WiscEmail-->
                     <div class="field">
@@ -217,8 +216,8 @@
 
         <div class="modal" id="my_contact_modal">
             <div class="modal-background" id="modalbg_contact"></div>
-            <div class="modal-content p-6 has-background-primary-light has-text-centered">
-                <h1 class="has-size-3 title">Contact Us!</h1>
+            <div class="modal-content p-6 has-background-dark-light has-text-centered">
+                <h1 class="has-size-3 title has-text-white">Contact Us!</h1>
                 <form>
                     <p>
                         <a href="mailto:wkalivas@wisc.edu?cc=cpliska@wisc.edu&subject=BadgerExchange Inquiry">Send us an email!</a>
@@ -226,7 +225,46 @@
                 </form>
             </div>
         </div>
+
+
+        <div class="modal" id="my_profile_modal">
+            <div class="modal-background" id="modalbg_profile"></div>
+            <div class="modal-content p-6 has-background-dark-light has-text-centered">
+                <h1 class="has-size-3 title has-text-white">Your Profile!</h1>
+                <div class="is-flex is-flex-direction-row is-justify-content-space-around"">
+                    <figure class="image is-128x128 is-align-items-flex-start">
+                        <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+                    </figure>
+                    <div>
+                    <p class="is-centered has-text-white">
+                        Maybe previous transactions</p>
+                    </div>
+
+                    <div class = "has-text-white is-centered">
+                        maybe profile info? name, email, etc.?
+                    </div>
     
+                </div>
+    
+            </div>
+    
+    
+        </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <div class="footer">
             <div class="content has-text-centered footer_style">
@@ -235,47 +273,6 @@
         </div>
 
     <script src="index.js"></script>
-
-
-    <!-- LOGIN TAB SCRIPTS may be changed for different Javascript-->
-    <!-- <script>
-
-    var mybutton = document.querySelector("#loginbutton");
-    mybutton.addEventListener('click', function(){
-       //grab model
-       var mymodal = document.querySelector("#mymodal");
-       mymodal.classList.add('is-active');
-    })
-
-    var modalbg = document.querySelector("#modalbg");
-    modalbg.addEventListener('click', function() {
-        mymodal.classList.remove('is-active');
-    })
-
-    var my_contact_button = document.querySelector("#contact_button");
-    my_contact_button.addEventListener('click', function () {
-    var my_contact_modal = document.querySelector("#my_contact_modal");
-    my_contact_modal.classList.add('is-active');
-})
-
-var modalbg_contact = document.querySelector("#modalbg_contact");
-modalbg_contact.addEventListener('click', function () {
-    my_contact_modal.classList.remove('is-active');
-})
-
-// sign up button
-var my_sign_up_button = document.querySelector("#sign_up_button");
-my_sign_up_button.addEventListener('click', function () {
-    var my_sign_up_modal = document.querySelector("#my_sign_up_modal");
-    my_sign_up_modal.classList.add('is-active');
-})
-
-var modalbg_sign_up = document.querySelector("#modalbg_sign_up");
-modalbg_sign_up.addEventListener('click', function () {
-    my_sign_up_modal.classList.remove('is-active');
-})
-    </script> -->
-
 </body>
 
 
