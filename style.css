@@ -4,9 +4,12 @@
 .badger_title{
     font-style: italic;
     background-color:lightgrey;
+    border-radius: 65%;
     color: #c5050c;
     border: 2px solid black;
     text-align: center;
+    margin-left: 20%;
+    margin-right:20%;
 }
 .footer_style{
     background-color: #c5050c;
