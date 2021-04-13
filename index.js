@@ -73,9 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
       // Add a click event on each of them
       $navbarBurgers.forEach( el => {
-        el.addEventListener('click', () => {
-            console.log(el.dataset.target);
-  
+        el.addEventListener('click', () => {  
           // Get the target from the "data-target" attribute
         const target = el.dataset.target;
         const $target = document.getElementById(target);
@@ -93,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
-  
+
   var slideIndex = 0;
   showSlides();
   
