@@ -1,14 +1,15 @@
-var mybutton = document.querySelector("#loginbutton");
-mybutton.addEventListener('click', function(){
+var login_button = document.querySelector("#login_button");
+login_button.addEventListener('click', function() {
    //grab model
    var mymodal = document.querySelector("#mymodal");
    mymodal.classList.add('is-active');
 })
 
 var modalbg = document.querySelector("#modalbg");
-modalbg.addEventListener('click', function() {
+modalbg.addEventListener('click', function () {
     mymodal.classList.remove('is-active');
 })
+
 
 var my_contact_button = document.querySelector("#contact_button");
 my_contact_button.addEventListener('click', function () {
@@ -20,6 +21,7 @@ var modalbg_contact = document.querySelector("#modalbg_contact");
 modalbg_contact.addEventListener('click', function () {
 my_contact_modal.classList.remove('is-active');
 })
+
 
 // sign up button
 var my_sign_up_button = document.querySelector("#sign_up_button");
@@ -44,3 +46,65 @@ var modalbg_profile = document.querySelector("#modalbg_profile");
 modalbg_profile.addEventListener('click', function() {
     my_profile_modal.classList.remove('is-active');
 })
+
+ //BUY BUTTON
+var buy_btn = document.querySelectorAll('#buy_btn');
+buy_btn.forEach(buy => {
+    buy.addEventListener('click', function(){
+        var buy_sell_modal = document.querySelector('#buy_sell_modal');
+        buy_sell_modal.classList.add('is-active');
+
+    })
+})
+
+var modal_buy_sell = document.querySelector('#modalbg_matching');
+modal_buy_sell.addEventListener('click', function() {
+    buy_sell_modal.classList.remove('is-active');
+})
+
+
+
+// NAVBar Burger
+document.addEventListener('DOMContentLoaded', () => {
+    // Get all "navbar-burger" elements
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+    // Check if there are any navbar burgers
+    if ($navbarBurgers.length > 0) {
+  
+      // Add a click event on each of them
+      $navbarBurgers.forEach( el => {
+        el.addEventListener('click', () => {
+            console.log(el.dataset.target);
+  
+          // Get the target from the "data-target" attribute
+        const target = el.dataset.target;
+        const $target = document.getElementById(target);
+  
+          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+         el.classList.toggle('is-active');
+         console.log($target, target);
+         $target.classList.toggle('is-active');
+        // $target.style.backgroundColor = "black";
+         $target.style.backgroundColor = "#c5050c";
+
+         //$target.classList.add('has-text-black', 'has-text-weight-bold');
+        
+        });
+      });
+    }
+  });
+  
+  var slideIndex = 0;
+  showSlides();
+  
+  function showSlides() {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    slideIndex++;
+    if (slideIndex > slides.length) {slideIndex = 1}
+    slides[slideIndex-1].style.display = "block";
+    setTimeout(showSlides, 3000); // Change image every 2 seconds
+  }
