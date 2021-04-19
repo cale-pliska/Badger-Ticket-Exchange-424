@@ -1,3 +1,33 @@
+// functions
+
+let loggedoutlinks = document.querySelectorAll(".loggedout");
+let loggedinlinks = document.querySelectorAll(".loggedin");
+
+function configureNav(user) {
+  // check if user is passed to function (signed in)
+  if (user) {
+    // show all the logged in links
+    loggedinlinks.forEach((link) => {
+      link.classList.remove("is-hidden");
+    });
+    // hide all the logged out links
+    loggedoutlinks.forEach((link) => {
+      link.classList.add("is-hidden");
+    });
+  }
+  // no user is passed to the function (use is signed out)
+  else {
+    // show all the logged out links
+    loggedoutlinks.forEach((link) => {
+      link.classList.remove("is-hidden");
+    });
+    // hide all the logged in links
+    loggedinlinks.forEach((link) => {
+      link.classList.add("is-hidden");
+    });
+  }
+}
+
 // testing firebase 
 // console.log(firebase);
 
@@ -114,6 +144,34 @@ function showSlides() {
   setTimeout(showSlides, 3000); // Change image every 2 seconds
 }
 
+// signup users and add them to the firebase database.
+let signup_form = document.querySelector("#signup_form");
+
+signup_form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  console.log("form submitted!");
+
+  // grab email and password
+  let email = document.querySelector('#email_su').value;
+  let password = document.querySelector('#password_su').value;
+  // console.log(email, password);
+
+  // pass the email and password to firebase
+  auth.createUserWithEmailAndPassword(email, password).then(() => {
+    console.log("created user successfully!");
+    my_sign_up_modal.classList.remove('is-active');
+
+    // reset form
+    signup_form.reset();
+  })
+  .catch((error) => {
+    let signup_error = document.querySelector("#signup_error");
+    signup_error.innerHTML = `<p>${error.message}</p>`;
+
+  });
+
+});
+
 // login users and add them to the firebase database.
 let login_form = document.querySelector("#login_form");
 
@@ -127,8 +185,48 @@ login_form.addEventListener('submit', (e) => {
   // console.log(email, password);
 
   // pass the email and password to firebase
-  auth.createUserWithEmailAndPassword(email, password).then(() => {
-    console.log("created user successfully!")
-  });
+  auth.signInWithEmailAndPassword(email, password)
+    .then((userCredentials) => {
+      console.log(userCredentials.user.email + " with the uid " + userCredentials.user.uid + " is logged in!");
+      // close the modal
+      login_modal.classList.remove('is-active');
 
+      // reset 
+      login_form.reset();
+
+    })
+    .catch((error) => {
+      console.log(error.message);
+
+      // grab the error div
+
+      let signin_error = document.querySelector('#login_error');
+      signin_error.innerHTML = `<p>${error.message}</p>`
+    })
+})
+
+// sign out
+let signoutbtn = document.querySelector('#sign_out_button');
+
+// attach a click event
+
+signoutbtn.addEventListener('click', () => {
+  auth.signOut()
+    .then((msg) => {
+      console.log("user signed out!");
+    })
+})
+
+// keep track of user authentication status (signin or signout)
+
+auth.onAuthStateChanged((user) => {
+  // check if user is signed in or out
+  if (user) {
+    console.log(user);
+    configureNav(user);
+  }
+  else {
+    console.log("user is now signed out");
+    configureNav(user);
+  }
 })
