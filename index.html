@@ -79,6 +79,9 @@
                     <div class="hero-body">
                         <p class="title title_game"><i>Badger Exchange</i></p>
                         <p class="subtitle"><i>Upcoming UW-Madison Sports Games</i></p>
+
+
+                        <button id = "admin_post" class="button is-danger is-light is-hidden">Post Game</button>
                     </div>
                 </div>
                 <div class="columns is-7">
@@ -115,7 +118,17 @@
     <div class="container">
         <div class="columns">
             <!--Main content-->
-            <div class="section column is-12 p-6" style="overflow: auto; height: 75vh;">
+            <div class="section column is-12 p-6" id = "main"style="overflow: auto; height: 75vh;">
+                    <div class="container" id = "hidden_form">
+                    <!-- IDK if NEED this for pulling up admin post button-->
+                    <form id ="submitGameForm">
+
+
+                    </form>
+                </div>
+
+               <div id = "content" class="continer">
+
                 <div class="card cards_color">
                     <div class="card-image has-text-centered">
                         <p class="title_game">Men's Basketball UW-Madison vs University of North Carolina</p>
@@ -175,8 +188,11 @@
                     </div>
                 </div>
             </div>
+
+
+
+            </div>
         </div>
-    </div>
     </div>
 
     <!-- LOGIN MODAL -->
@@ -197,15 +213,7 @@
                 <div class="field">
                     <label class="label has-text-white">Password</label>
                     <div class="control">
-                        <input type="text" name="" id="password">
-                    </div>
-                </div>
-                <!--ADMIN YES or NO-->
-                <div class="field">
-                    <label class="checkbox has-text-white">
-                        <input type="checkbox" name="admin" id="admin_login">
-                        Admin: Yes or No</label>
-                    <div class="control">
+                        <input type="password" name="" id="password">
                     </div>
                 </div>
                 <!-- Submit  -->
@@ -244,21 +252,21 @@
                 <div class="field">
                     <label class="label has-text-white">First Name</label>
                     <div class="control">
-                        <input type="text" name="" id="">
+                        <input type="text" name="" id="fName_su">
                     </div>
                 </div>
                 <!--Last NAME  -->
                 <div class="field">
                     <label class="label has-text-white">Last Name</label>
                     <div class="control">
-                        <input type="text" name="" id="">
+                        <input type="text" name="" id="lName_su">
                     </div>
                 </div>
                 <!--UserNAME  -->
                 <div class="field">
                     <label class="label has-text-white">Username</label>
                     <div class="control">
-                        <input type="text" name="" id="">
+                        <input type="text" name="" id="username_su">
                     </div>
                 </div>
                 <!--Password-->
@@ -266,7 +274,15 @@
                     <label class="label has-text-white">Password</label>
                     <div class="control">
                         <!-- password sign up -->
-                        <input type="text" name="" id="password_su">
+                        <input type="password" name="" id="password_su">
+                    </div>
+                </div>
+                <div class="field"> 
+                    <label class = "has-text-white" for="user">User: </label>
+                        <input type="radio" name="user_type" value="1" checked="checked">Admin</input>
+                        <input type="radio" name="user_type" value="0">Student</input>
+                    
+                    <div class="control">
                     </div>
                 </div>
                 <!-- Submit  -->

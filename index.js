@@ -154,15 +154,40 @@ signup_form.addEventListener('submit', (e) => {
   // grab email and password
   let email = document.querySelector('#email_su').value;
   let password = document.querySelector('#password_su').value;
+  let fName = document.querySelector('#fName_su').value;
+  let lName = document.querySelector('#lName_su').value;
+  let username = document.querySelector('#username_su').value;
+  let admin = document.querySelector('input[name="user_type"]:checked').value;
+  let user_type = false;
+  // user_type is true == Admin otherwise is student == false
+  if (admin == 1){
+    user_type = true;
+  }
+    
+
   // console.log(email, password);
 
   // pass the email and password to firebase
-  auth.createUserWithEmailAndPassword(email, password).then(() => {
+  auth.createUserWithEmailAndPassword(email, password).then((userCredentials) => {
     console.log("created user successfully!");
+
+    user = {
+      fName:fName,
+      lName: lName,
+      username: username,
+      id: userCredentials.user.uid,
+      email: email,
+      admin: user_type
+    };
+
+    db.collection("Users").add(user).then((data) =>{
+      console.log("User added to database");
+    })
     my_sign_up_modal.classList.remove('is-active');
 
     // reset form
     signup_form.reset();
+
   })
   .catch((error) => {
     let signup_error = document.querySelector("#signup_error");
@@ -171,6 +196,135 @@ signup_form.addEventListener('submit', (e) => {
   });
 
 });
+
+
+
+function showFeed(){
+  let content = document.querySelector('#content');
+  // TODO
+
+
+
+}
+
+function welcome_admin_page(){
+  let content = document.querySelector('#main');
+  db.collection('Users').get().then((data) =>{
+    let userdata = data.docs;
+    userdata.forEach((user) =>{
+      if(user.data().id == auth.currentUser.uid && user.data().admin == true){
+        let button_post= document.querySelector('#admin_post');
+
+        button_post.classList.remove('is-hidden');
+
+
+        let html = '<h1 class="title is-size-3">Post an upcoming Game</h1>';
+        html += 
+        `
+        <div class = columns>
+          <div class = "column is-7">
+            <div class = "field">
+              <label for="sport">Choose a sport:</label>
+                <select name="cars" id="sport">
+                  <option value="Men's Basketball">Men's Basketball</option>
+                  <option value="Men's Football">Men's Football</option>
+                  <option value="Men's Hockey">Men's Hockey</option>
+                  <option value="Men's Soccer">Men's Soccer</option>
+                  <option value="Women's Basketball">Women's Basketball</option>
+                  <option value="Women's Basketball">Women's Basketball</option>
+                  <option value="Women's Volleyball">Women's Volleyball</option>
+                  <option value="Women's Hockey">Women's Hockey</option>
+            
+                </select>
+            
+        </div>
+
+        <div class="field">
+          <label class="label">Date</label>
+            <div class="control">
+              <input type="date" id="gameDate" name="game_date">
+            </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Time</label>
+            <div class="control">
+              <input type="time" id="gameTime" name="game_time">
+            </div>
+        </div>
+
+        <div class="field">
+          <label class = "label" > Opponent </label> 
+            <div class = "control" >
+            <input class = "input" type = "text" id="opponent" placeholder = "Input Opponent" >
+           </div> 
+          
+        </div>
+        </div>
+
+
+        <div class = "column is-5">
+            <div class= "field">
+              <label id = "" class = "label">Select meeting locations</label>
+              
+              <p><input name = "locations" id = "mem" type = "checkbox" value = "memU">Memorial Union</p>
+              <p><input name = "locations" id = "union" type = "checkbox" value = "uSouth">Union South</p>
+              <p><input name = "locations" id = "bschool" type = "checkbox" value = "bschool"> Business School</p>
+              <p><input name = "locations" id = "gordons" type = "checkbox" value = "gordons">Gordons Dinning Hall</p>
+              <p><input name = "locations" id = "dejope" type = "checkbox" value = "Dejope">DeJope Dinning Hall</p>
+
+          </div>
+        <br>
+        <div class="field is-grouped">
+          <div class="control">
+           <p> <button id = "submit_post" class="button is-danger is-light is-medium">Submit</button></p>
+          </div>
+        </div>
+        </div>
+
+        
+        </div>
+
+        `;
+        //let submitGameForm = document.querySelector('#submit_post');
+
+        let submitGameForm = document.querySelector('#submitGameForm');
+        button_post.addEventListener('click', ()=>{
+          document.querySelector('#content').classList.add('is-hidden');
+          submitGameForm.innerHTML = html;
+        })
+
+      }
+    })
+  })
+}
+submitGameForm.addEventListener('submit', (e)=>{
+  console.log("IS this getting called")
+  e.preventDefault();
+  let sport = document.querySelector('#sport').value;
+  let date = document.querySelector('#gameDate').value;
+  let time = document.querySelector('#gameTime').value;
+  let opponent = document.querySelector('#opponent').value;
+  let checks = document.getElementsByName('locations');
+  let locations = [];
+  for (var checkbox of checks){
+    if(checkbox.checked){
+      locations.push(checkbox.value);
+      
+    }
+  }
+
+  //UPLOAD GAME DATA
+  submitGameForm.classList.add('is-hidden');
+  let content = document.querySelector('#content');
+  content.classList.add('is-active');
+  content.classList.remove('is-hidden');
+  document.querySelector('main').classList.add('is-active');
+
+  console.log("First Part of Post: ", locations, sport, date, time, opponent);
+
+})
+
 
 // login users and add them to the firebase database.
 let login_form = document.querySelector("#login_form");
@@ -190,9 +344,10 @@ login_form.addEventListener('submit', (e) => {
       console.log(userCredentials.user.email + " with the uid " + userCredentials.user.uid + " is logged in!");
       // close the modal
       login_modal.classList.remove('is-active');
-
+      welcome_admin_page();
       // reset 
       login_form.reset();
+
 
     })
     .catch((error) => {
@@ -210,7 +365,8 @@ let signoutbtn = document.querySelector('#sign_out_button');
 
 // attach a click event
 
-signoutbtn.addEventListener('click', () => {
+signoutbtn.addEventListener('click', (e) => {
+  e.preventDefault();
   auth.signOut()
     .then((msg) => {
       console.log("user signed out!");
