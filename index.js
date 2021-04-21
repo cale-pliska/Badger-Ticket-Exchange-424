@@ -28,6 +28,24 @@ function configureNav(user) {
   }
 }
 
+var slideIndex = 0;
+showSlides();
+
+function showSlides() {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) {
+    slideIndex = 1
+  }
+  slides[slideIndex - 1].style.display = "block";
+  setTimeout(showSlides, 3000); // Change image every 2 seconds
+}
+
+
 // testing firebase 
 // console.log(firebase);
 
@@ -127,22 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-var slideIndex = 0;
-showSlides();
 
-function showSlides() {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  slideIndex++;
-  if (slideIndex > slides.length) {
-    slideIndex = 1
-  }
-  slides[slideIndex - 1].style.display = "block";
-  setTimeout(showSlides, 3000); // Change image every 2 seconds
-}
 
 // signup users and add them to the firebase database.
 let signup_form = document.querySelector("#signup_form");
@@ -163,8 +166,7 @@ signup_form.addEventListener('submit', (e) => {
   if (admin == 1){
     user_type = true;
   }
-    
-
+  
   // console.log(email, password);
 
   // pass the email and password to firebase
@@ -198,34 +200,32 @@ signup_form.addEventListener('submit', (e) => {
 });
 
 
-
 function showFeed(){
   let content = document.querySelector('#content');
   db.collection("Games").get().then((data) =>{
     let gamedata = data.docs;
-    let content_html = "";
-
     gamedata.forEach((game) =>{
       let post = game.data();
-
       console.log(post, game);
       let str_day = post.date + " " + post.time;
+      //console.log(str_day);
       let day = Date.parse(str_day);
-      console.log(day.toString());
-      let day_pieces = day.split(" ");
-      console.log("Can I split the date: ", day[0], "next part:", day[1]);
-      //day = day.substring(0,3).toUpperCase();
-     // date_list = day.split(' ')
-     // console.log(day, date_list);
+      day = new Date(day).toString()
+      full_date = day.slice(4,15);
+      day = day.toUpperCase().slice(0,3);
+
+      format_full = `${full_date.slice(0,3).toUpperCase()} ${full_date.slice(4,6)}, ${full_date.slice(7,11)}`;
+      console.log(format_full);
+
       let newGame = `
-      <div class="card cards_color">
+      <div class="card mt-4 cards_color">
       <div class="card-image has-text-centered">
           <p class="title_game">${post.sport} UW-Madison vs ${post.opp}</p>
       </div>
       <div class="card-content is-flex is-flex-direction-row is-justify-content-space-around">
           <div class="">
-              <p class="post_dates">NONE</p>
-              <p>MAR 19, 2021</p>
+              <p class="post_dates">${day}</p>
+              <p>${format_full}</p>
           </div>
           <div class="post_buttons">
               <button id="buy_btn" class="button is-danger is-light is-medium">BUY</button>
@@ -237,20 +237,11 @@ function showFeed(){
 
       </div>
   </div>
-      
-      
-      
-      
-      
       `
-
-
+      content.innerHTML += newGame;
 
     })
   })
-
-  // TODO
-
 
 
 }
@@ -335,7 +326,6 @@ function welcome_admin_page(){
 
         `;
         //let submitGameForm = document.querySelector('#submit_post');
-
         let submitGameForm = document.querySelector('#submitGameForm');
         button_post.addEventListener('click', ()=>{
           document.querySelector('#content').classList.add('is-hidden');
@@ -346,6 +336,8 @@ function welcome_admin_page(){
     })
   })
 }
+
+
 submitGameForm.addEventListener('submit', (e)=>{
   e.preventDefault();
   let sport = document.querySelector('#sport').value;
@@ -439,6 +431,7 @@ auth.onAuthStateChanged((user) => {
   if (user) {
     console.log(user);
     configureNav(user);
+    //showFeed();
   }
   else {
     console.log("user is now signed out");
