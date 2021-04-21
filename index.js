@@ -201,6 +201,54 @@ signup_form.addEventListener('submit', (e) => {
 
 function showFeed(){
   let content = document.querySelector('#content');
+  db.collection("Games").get().then((data) =>{
+    let gamedata = data.docs;
+    let content_html = "";
+
+    gamedata.forEach((game) =>{
+      let post = game.data();
+
+      console.log(post, game);
+      let str_day = post.date + " " + post.time;
+      let day = Date.parse(str_day);
+      console.log(day.toString());
+      let day_pieces = day.split(" ");
+      console.log("Can I split the date: ", day[0], "next part:", day[1]);
+      //day = day.substring(0,3).toUpperCase();
+     // date_list = day.split(' ')
+     // console.log(day, date_list);
+      let newGame = `
+      <div class="card cards_color">
+      <div class="card-image has-text-centered">
+          <p class="title_game">${post.sport} UW-Madison vs ${post.opp}</p>
+      </div>
+      <div class="card-content is-flex is-flex-direction-row is-justify-content-space-around">
+          <div class="">
+              <p class="post_dates">NONE</p>
+              <p>MAR 19, 2021</p>
+          </div>
+          <div class="post_buttons">
+              <button id="buy_btn" class="button is-danger is-light is-medium">BUY</button>
+              <button id="buy_btn" class="button is-danger is-light is-medium">SELL</button>
+          </div>
+          <div class="price">
+              <p>Current Price: 50$</p>
+          </div>
+
+      </div>
+  </div>
+      
+      
+      
+      
+      
+      `
+
+
+
+    })
+  })
+
   // TODO
 
 
@@ -299,7 +347,6 @@ function welcome_admin_page(){
   })
 }
 submitGameForm.addEventListener('submit', (e)=>{
-  console.log("IS this getting called")
   e.preventDefault();
   let sport = document.querySelector('#sport').value;
   let date = document.querySelector('#gameDate').value;
@@ -315,13 +362,25 @@ submitGameForm.addEventListener('submit', (e)=>{
   }
 
   //UPLOAD GAME DATA
-  submitGameForm.classList.add('is-hidden');
-  let content = document.querySelector('#content');
-  content.classList.add('is-active');
-  content.classList.remove('is-hidden');
-  document.querySelector('main').classList.add('is-active');
+  let game_content = {
+    sport: sport,
+    date: date,
+    time:time,
+    opp: opponent,
+    locations: locations
+  }
+  db.collection("Games").add(game_content).then((data) =>{
+    console.log(game_content, ": Game added to db");
+    submitGameForm.classList.add('is-hidden');
+    let content = document.querySelector('#content');
+    content.classList.add('is-active');
+    content.classList.remove('is-hidden');
 
-  console.log("First Part of Post: ", locations, sport, date, time, opponent);
+  })
+  showFeed();
+
+  //document.querySelector('main').classList.add('is-active');
+
 
 })
 
