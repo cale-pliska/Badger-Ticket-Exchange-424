@@ -1,5 +1,10 @@
 // functions
 
+
+
+// TODO:
+
+
 let loggedoutlinks = document.querySelectorAll(".loggedout");
 let loggedinlinks = document.querySelectorAll(".loggedin");
 
@@ -186,6 +191,7 @@ signup_form.addEventListener('submit', (e) => {
       console.log("User added to database");
     })
     my_sign_up_modal.classList.remove('is-active');
+    showFeed();
 
     // reset form
     signup_form.reset();
@@ -199,23 +205,62 @@ signup_form.addEventListener('submit', (e) => {
 
 });
 
+let info_tab = document.querySelector('#info_tab');
+let friends_tab = document.querySelector('#tix_tab');
+let info_tabHTML = ``;
+let friends_tabHTML = ``;
+db.collection('Users').get().then((data) =>{
+  let mydata = data.docs;
+  mydata.forEach((user) =>{
+    if (user.data().id == auth.currentUser.uid){
+      info_tabHTML += ` <p class = "has-text-weight-bold has-text-white"><b>Name: </b> ${user.data().fName} ${user.data().lName}</p>`;
+      info_tabHTML +=` <p class = "has-text-weight-bold has-text-white"><b>Username:</b> ${user.data().username}</p>`;
+      info_tabHTML += `<p class = "has-text-weight-bold has-text-white"><b>Email:</b> ${user.data().email}</p>`;
+      info_tab.innerHTML = info_tabHTML;
+    }
+
+  })
+
+})
+
+
+function openPage(evt, pageName) {
+
+  // Hide all elements with class="tabcontent" by default */
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].classList.remove('is-hidden');
+      tabcontent[i].classList.add("is-active");
+      tabcontent[i].style.display = "none";
+  }
+
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace("is-hidden", " is-active");
+  }
+
+  // Show the specific tab content
+  document.getElementById(pageName).style.display = "block";
+  evt.currentTarget.classList += " is-active"
+}
+
+
+
 
 function showFeed(){
   let content = document.querySelector('#content');
+  let content_html = ``;
   db.collection("Games").get().then((data) =>{
     let gamedata = data.docs;
     gamedata.forEach((game) =>{
       let post = game.data();
-      console.log(post, game);
       let str_day = post.date + " " + post.time;
-      //console.log(str_day);
       let day = Date.parse(str_day);
       day = new Date(day).toString()
       full_date = day.slice(4,15);
       day = day.toUpperCase().slice(0,3);
-
       format_full = `${full_date.slice(0,3).toUpperCase()} ${full_date.slice(4,6)}, ${full_date.slice(7,11)}`;
-      console.log(format_full);
 
       let newGame = `
       <div class="card mt-4 cards_color">
@@ -238,9 +283,10 @@ function showFeed(){
       </div>
   </div>
       `
-      content.innerHTML += newGame;
+      content_html += newGame;
 
     })
+    content.innerHTML = content_html;
   })
 
 
@@ -253,8 +299,14 @@ function welcome_admin_page(){
     userdata.forEach((user) =>{
       if(user.data().id == auth.currentUser.uid && user.data().admin == true){
         let button_post= document.querySelector('#admin_post');
+        let admin_view= document.querySelector('#admin_view');
+
 
         button_post.classList.remove('is-hidden');
+        admin_view.classList.remove('is-hidden');
+        admin_view.addEventListener('click',() =>{
+          showFeed();
+        })
 
 
         let html = '<h1 class="title is-size-3">Post an upcoming Game</h1>';
@@ -395,10 +447,12 @@ login_form.addEventListener('submit', (e) => {
       console.log(userCredentials.user.email + " with the uid " + userCredentials.user.uid + " is logged in!");
       // close the modal
       login_modal.classList.remove('is-active');
-      welcome_admin_page();
-      // reset 
+      let hide_msg = document.querySelector('#hide_msg');
+      hide_msg.classList.add('is-hidden');
       login_form.reset();
-
+      welcome_admin_page();
+      showFeed();
+      // reset 
 
     })
     .catch((error) => {
@@ -429,9 +483,10 @@ signoutbtn.addEventListener('click', (e) => {
 auth.onAuthStateChanged((user) => {
   // check if user is signed in or out
   if (user) {
-    console.log(user);
+    let hide_msg = document.querySelector('#hide_msg');
+    hide_msg.classList.add('is-hidden');
     configureNav(user);
-    //showFeed();
+    showFeed();
   }
   else {
     console.log("user is now signed out");
