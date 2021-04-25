@@ -1,8 +1,15 @@
 // functions
 
-
-
 // TODO:
+
+// 1. bugs on buttons for sign in as admin to post or view games. Bugs on showing must be logged in to view content
+// ** little buggy right now - not sure if its the ordering or the functions or what but buttons on post/view game seem to only
+// work the first time you press them. 
+// 2. Figure out buy/sell buttons - no longer work after making the posts by admin
+// 3. What to show when hit buy/sell button - either modal or how are we matching the buyers and sellers
+// 4. Sport nav button filter the posts by sport type
+// 5. Fix profile nav tab - Idk if should get ride of profile image or what.
+// 6. Anything else? 
 
 
 let loggedoutlinks = document.querySelectorAll(".loggedout");
@@ -478,7 +485,6 @@ signoutbtn.addEventListener('click', (e) => {
     })
 })
 
-// keep track of user authentication status (signin or signout)
 
 auth.onAuthStateChanged((user) => {
   // check if user is signed in or out
