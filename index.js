@@ -57,6 +57,256 @@ function showSlides() {
 }
 
 
+function welcome_admin_page(){
+  let content = document.querySelector('#main');
+  db.collection('Users').get().then((data) =>{
+    let userdata = data.docs;
+    userdata.forEach((user) =>{
+      if(user.data().id == auth.currentUser.uid && user.data().admin == true){
+        let button_post= document.querySelector('#admin_post');
+        let admin_view= document.querySelector('#admin_view');
+        console.log("AM I getting this button" , button_post);
+
+
+        button_post.classList.remove('is-hidden');
+        admin_view.classList.remove('is-hidden');
+        admin_view.addEventListener('click',() =>{
+          showFeed();
+        })
+
+
+        let html = '<h1 class="title is-size-3">Post an upcoming Game</h1>';
+        html += 
+        `
+        <div class = columns>
+          <div class = "column is-7">
+            <div class = "field">
+              <label for="sport">Choose a sport:</label>
+                <select name="" id="sport">
+                  <option value="Men's Basketball">Men's Basketball</option>
+                  <option value="Men's Football">Men's Football</option>
+                  <option value="Men's Hockey">Men's Hockey</option>
+                  <option value="Men's Soccer">Men's Soccer</option>
+                  <option value="Women's Basketball">Women's Basketball</option>
+                  <option value="Women's Basketball">Women's Basketball</option>
+                  <option value="Women's Volleyball">Women's Volleyball</option>
+                  <option value="Women's Hockey">Women's Hockey</option>
+            
+                </select>
+            
+        </div>
+
+        <div class="field">
+          <label class="label">Date</label>
+            <div class="control">
+              <input type="date" id="gameDate" name="game_date">
+            </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Time</label>
+            <div class="control">
+              <input type="time" id="gameTime" name="game_time">
+            </div>
+        </div>
+
+        <div class="field">
+          <label class = "label" > Opponent </label> 
+            <div class = "control" >
+            <input class = "input" type = "text" id="opponent" placeholder = "Input Opponent" >
+           </div> 
+          
+        </div>
+        </div>
+
+
+        <div class = "column is-5">
+            <div class= "field">
+              <label id = "" class = "label">Select meeting locations</label>
+              
+              <p><input name = "locations" id = "mem" type = "checkbox" value = "Memorial Union">Memorial Union</p>
+              <p><input name = "locations" id = "union" type = "checkbox" value = "Union South">Union South</p>
+              <p><input name = "locations" id = "bschool" type = "checkbox" value = "Business School"> Business School</p>
+              <p><input name = "locations" id = "gordons" type = "checkbox" value = "Gordons Dinning Hall">Gordons Dinning Hall</p>
+              <p><input name = "locations" id = "dejope" type = "checkbox" value = "DeJope Dinning Hall">DeJope Dinning Hall</p>
+
+          </div>
+        <br>
+        <div class="field is-grouped">
+          <div class="control">
+           <p> <button id = "submit_post" class="button is-danger is-light is-medium">Submit</button></p>
+          </div>
+        </div>
+        </div>
+
+        
+        </div>
+
+        `;
+        //let submitGameForm = document.querySelector('#submit_post');
+        let submitGameForm = document.querySelector('#submitGameForm');
+        button_post.addEventListener('click', ()=>{
+          document.querySelector('#content').classList.add('is-hidden');
+          submitGameForm.innerHTML = html;
+        })
+
+      }
+    })
+  })
+}
+
+
+function showFeed(){
+  let content = document.querySelector('#content');
+  let content_html = "";
+  db.collection("Games").get().then((data) =>{
+    let gamedata = data.docs;
+    gamedata.forEach((game) =>{
+      let post = game.data();
+      let ID = game.id;
+      let str_day = post.date + " " + post.time;
+      let day = Date.parse(str_day);
+      day = new Date(day).toString()
+      full_date = day.slice(4,15);
+      day = day.toUpperCase().slice(0,3);
+      format_full = `${full_date.slice(0,3).toUpperCase()} ${full_date.slice(4,6)}, ${full_date.slice(7,11)}`;
+
+      let newGame = `
+      <div class="card mt-4 cards_color">
+      <div class="card-image has-text-centered">
+          <p class="title_game">${post.sport} UW-Madison vs ${post.opp}</p>
+      </div>
+      <div class="card-content is-flex is-flex-direction-row is-justify-content-space-around">
+          <div class="">
+              <p class="post_dates">${day}</p>
+              <p>${format_full}</p>
+          </div>
+          <div class="post_buttons">
+              <button onclick = "myBuyFunction(\``+ ID+ `\`)" id="buy_btn" class="button is-danger is-light is-medium">BUY</button>
+              <button onclick = "mySellFunction(\``+ ID+ `\`)" id="sell_btn" class="button is-danger is-light is-medium">SELL</button>
+          </div>
+          <div class="price">
+              <p>Current Price: 50$</p>
+          </div>
+
+      </div>
+  </div>
+      `
+      content_html += newGame;
+
+    })
+    content.innerHTML = content_html;
+  })
+
+
+}
+
+function tabInfo(){
+  let info_tab = document.querySelector('#info_tab');
+  let friends_tab = document.querySelector('#tix_tab');
+  let info_tabHTML = ``;
+  let friends_tabHTML = ``;
+  db.collection('Users').get().then((data) =>{
+    let mydata = data.docs;
+    mydata.forEach((user) =>{
+      if (user.data().id == auth.currentUser.uid){
+        info_tabHTML += ` <p class = "has-text-weight-bold has-text-white"><b>Name: </b> ${user.data().fName} ${user.data().lName}</p>`;
+        info_tabHTML +=` <p class = "has-text-weight-bold has-text-white"><b>Username:</b> ${user.data().username}</p>`;
+        info_tabHTML += `<p class = "has-text-weight-bold has-text-white"><b>Email:</b> ${user.data().email}</p>`;
+        info_tab.innerHTML = info_tabHTML;
+      }
+  
+    })
+  
+  })
+  }
+
+
+function openPage(evt, pageName) {
+  // Hide all elements with class="tabcontent" by default */
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].classList.remove('is-hidden');
+      tabcontent[i].classList.add("is-active");
+      tabcontent[i].style.display = "none";
+  }
+
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace("is-hidden", " is-active");
+  }
+
+  // Show the specific tab content
+  document.getElementById(pageName).style.display = "block";
+  evt.currentTarget.classList += " is-active"
+}
+
+
+
+function myBuyFunction(game_ID){
+  
+  console.log("Hello", game_ID);
+  let meetinglocation = document.querySelector('#meetinglocation');
+  console.log(meetinglocation);
+  let meeting_HTML = '';
+  var buy_btn = document.querySelectorAll('#buy_btn');
+  buy_btn.forEach(buy => {
+    //console.log(buy.parentNode.parentNode.parentNode.id, buy.parentNode.parentNode.parentNode);
+    //console.log(buy, "buy button");
+    var buy_sell_modal = document.querySelector('#buy_sell_modal');
+    buy_sell_modal.classList.add('is-active');
+
+  })
+    db.collection('Games').doc(game_ID).get().then((data)=>{
+      let info = data.data();
+      meeting_HTML += 
+     ` <div class= "field">
+              <label id = "" class = "has-text-white label">Select meeting locations</label>
+        `
+      info.locations.forEach(loc => {
+        meeting_HTML += `  <p><input name = "locations2" id = "mem" type = "checkbox" value = "memU">${loc}</p>`;
+
+      })
+      meeting_HTML +=`</div>
+      <div class="field is-grouped">
+          <div class="control">
+           <p> <button id = "submit_buy" class="button is-danger is-light is-medium">Submit</button></p>
+          </div>
+        </div>`;
+
+      meetinglocation.innerHTML = meeting_HTML;
+
+    })
+
+  //})
+
+}
+
+let submit_buy = document.querySelector('#submit_buy');
+// submit_buy.addEventListener('click', () =>{
+//   let checks = document.getElementsByName('locations2');
+//   let locations2 = [];
+//   for (var checkbox of checks){
+//     if(checkbox.checked){
+//       locations2.push(checkbox.value);
+      
+//     }
+//   }
+
+//   let tix_content = {
+//     locations: locations2,
+//     buyer: user.currentUser.uid
+//   }
+//   console.log(tix_content);
+
+
+// })
+
+
+
+
+
 // testing firebase 
 // console.log(firebase);
 
@@ -111,14 +361,8 @@ modalbg_profile.addEventListener('click', function () {
   my_profile_modal.classList.remove('is-active');
 })
 
+
 //BUY BUTTON
-  var buy_btn = document.querySelectorAll('#buy_btn');
-  console.log("hello", buy_btn);
-  buy_btn.forEach(buy => {
-  console.log(buy, "buy button");
-    var buy_sell_modal = document.querySelector('#buy_sell_modal');
-    buy_sell_modal.classList.add('is-active');
-  })
 
 
 var modal_buy_sell = document.querySelector('#modalbg_matching');
@@ -211,190 +455,6 @@ signup_form.addEventListener('submit', (e) => {
 
 });
 
-// NEEDS TO BE IN FUNCTION I THINK AFTER LOG IN
-let info_tab = document.querySelector('#info_tab');
-let friends_tab = document.querySelector('#tix_tab');
-let info_tabHTML = ``;
-let friends_tabHTML = ``;
-db.collection('Users').get().then((data) =>{
-  let mydata = data.docs;
-  mydata.forEach((user) =>{
-    if (user.data().id == auth.currentUser.uid){
-      info_tabHTML += ` <p class = "has-text-weight-bold has-text-white"><b>Name: </b> ${user.data().fName} ${user.data().lName}</p>`;
-      info_tabHTML +=` <p class = "has-text-weight-bold has-text-white"><b>Username:</b> ${user.data().username}</p>`;
-      info_tabHTML += `<p class = "has-text-weight-bold has-text-white"><b>Email:</b> ${user.data().email}</p>`;
-      info_tab.innerHTML = info_tabHTML;
-    }
-
-  })
-
-})
-
-function showFeed(){
-  let content = document.querySelector('#content');
-  let content_html = "";
-  db.collection("Games").get().then((data) =>{
-    let gamedata = data.docs;
-    gamedata.forEach((game) =>{
-      let post = game.data();
-      let str_day = post.date + " " + post.time;
-      let day = Date.parse(str_day);
-      day = new Date(day).toString()
-      full_date = day.slice(4,15);
-      day = day.toUpperCase().slice(0,3);
-      format_full = `${full_date.slice(0,3).toUpperCase()} ${full_date.slice(4,6)}, ${full_date.slice(7,11)}`;
-
-      let newGame = `
-      <div class="card mt-4 cards_color">
-      <div class="card-image has-text-centered">
-          <p class="title_game">${post.sport} UW-Madison vs ${post.opp}</p>
-      </div>
-      <div class="card-content is-flex is-flex-direction-row is-justify-content-space-around">
-          <div class="">
-              <p class="post_dates">${day}</p>
-              <p>${format_full}</p>
-          </div>
-          <div class="post_buttons">
-              <button id="buy_btn" class="button is-danger is-light is-medium">BUY</button>
-              <button id="sell_btn" class="button is-danger is-light is-medium">SELL</button>
-          </div>
-          <div class="price">
-              <p>Current Price: 50$</p>
-          </div>
-
-      </div>
-  </div>
-      `
-      content_html += newGame;
-
-    })
-    content.innerHTML = content_html;
-  })
-
-
-}
-
-function openPage(evt, pageName) {
-
-  // Hide all elements with class="tabcontent" by default */
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].classList.remove('is-hidden');
-      tabcontent[i].classList.add("is-active");
-      tabcontent[i].style.display = "none";
-  }
-
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace("is-hidden", " is-active");
-  }
-
-  // Show the specific tab content
-  document.getElementById(pageName).style.display = "block";
-  evt.currentTarget.classList += " is-active"
-}
-
-
-
-function welcome_admin_page(){
-  let content = document.querySelector('#main');
-  db.collection('Users').get().then((data) =>{
-    let userdata = data.docs;
-    userdata.forEach((user) =>{
-      if(user.data().id == auth.currentUser.uid && user.data().admin == true){
-        let button_post= document.querySelector('#admin_post');
-        let admin_view= document.querySelector('#admin_view');
-
-
-        button_post.classList.remove('is-hidden');
-        admin_view.classList.remove('is-hidden');
-        admin_view.addEventListener('click',() =>{
-          showFeed();
-        })
-
-
-        let html = '<h1 class="title is-size-3">Post an upcoming Game</h1>';
-        html += 
-        `
-        <div class = columns>
-          <div class = "column is-7">
-            <div class = "field">
-              <label for="sport">Choose a sport:</label>
-                <select name="cars" id="sport">
-                  <option value="Men's Basketball">Men's Basketball</option>
-                  <option value="Men's Football">Men's Football</option>
-                  <option value="Men's Hockey">Men's Hockey</option>
-                  <option value="Men's Soccer">Men's Soccer</option>
-                  <option value="Women's Basketball">Women's Basketball</option>
-                  <option value="Women's Basketball">Women's Basketball</option>
-                  <option value="Women's Volleyball">Women's Volleyball</option>
-                  <option value="Women's Hockey">Women's Hockey</option>
-            
-                </select>
-            
-        </div>
-
-        <div class="field">
-          <label class="label">Date</label>
-            <div class="control">
-              <input type="date" id="gameDate" name="game_date">
-            </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Time</label>
-            <div class="control">
-              <input type="time" id="gameTime" name="game_time">
-            </div>
-        </div>
-
-        <div class="field">
-          <label class = "label" > Opponent </label> 
-            <div class = "control" >
-            <input class = "input" type = "text" id="opponent" placeholder = "Input Opponent" >
-           </div> 
-          
-        </div>
-        </div>
-
-
-        <div class = "column is-5">
-            <div class= "field">
-              <label id = "" class = "label">Select meeting locations</label>
-              
-              <p><input name = "locations" id = "mem" type = "checkbox" value = "memU">Memorial Union</p>
-              <p><input name = "locations" id = "union" type = "checkbox" value = "uSouth">Union South</p>
-              <p><input name = "locations" id = "bschool" type = "checkbox" value = "bschool"> Business School</p>
-              <p><input name = "locations" id = "gordons" type = "checkbox" value = "gordons">Gordons Dinning Hall</p>
-              <p><input name = "locations" id = "dejope" type = "checkbox" value = "Dejope">DeJope Dinning Hall</p>
-
-          </div>
-        <br>
-        <div class="field is-grouped">
-          <div class="control">
-           <p> <button id = "submit_post" class="button is-danger is-light is-medium">Submit</button></p>
-          </div>
-        </div>
-        </div>
-
-        
-        </div>
-
-        `;
-        //let submitGameForm = document.querySelector('#submit_post');
-        let submitGameForm = document.querySelector('#submitGameForm');
-        button_post.addEventListener('click', ()=>{
-          document.querySelector('#content').classList.add('is-hidden');
-          submitGameForm.innerHTML = html;
-        })
-
-      }
-    })
-  })
-}
-
-
 submitGameForm.addEventListener('submit', (e)=>{
   e.preventDefault();
   let sport = document.querySelector('#sport').value;
@@ -456,6 +516,7 @@ login_form.addEventListener('submit', (e) => {
       hide_msg.classList.add('is-hidden');
       login_form.reset();
       welcome_admin_page();
+      tabInfo();
       showFeed();
       // reset 
 
@@ -490,6 +551,8 @@ auth.onAuthStateChanged((user) => {
     let hide_msg = document.querySelector('#hide_msg');
     hide_msg.classList.add('is-hidden');
     configureNav(user);
+    welcome_admin_page();
+    tabInfo();
     showFeed();
   }
   else {
