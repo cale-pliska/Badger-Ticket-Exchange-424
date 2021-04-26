@@ -11,7 +11,6 @@
 // 5. Fix profile nav tab - Idk if should get ride of profile image or what.
 // 6. Anything else? 
 
-
 let loggedoutlinks = document.querySelectorAll(".loggedout");
 let loggedinlinks = document.querySelectorAll(".loggedin");
 
@@ -20,7 +19,7 @@ function configureNav(user) {
   if (user) {
     // show all the logged in links
     loggedinlinks.forEach((link) => {
-      link.classList.remove("is-hidden");
+    link.classList.remove("is-hidden");
     });
     // hide all the logged out links
     loggedoutlinks.forEach((link) => {
@@ -113,14 +112,14 @@ modalbg_profile.addEventListener('click', function () {
 })
 
 //BUY BUTTON
-var buy_btn = document.querySelectorAll('#buy_btn');
-buy_btn.forEach(buy => {
-  buy.addEventListener('click', function () {
+  var buy_btn = document.querySelectorAll('#buy_btn');
+  console.log("hello", buy_btn);
+  buy_btn.forEach(buy => {
+  console.log(buy, "buy button");
     var buy_sell_modal = document.querySelector('#buy_sell_modal');
     buy_sell_modal.classList.add('is-active');
-
   })
-})
+
 
 var modal_buy_sell = document.querySelector('#modalbg_matching');
 modal_buy_sell.addEventListener('click', function () {
@@ -212,6 +211,7 @@ signup_form.addEventListener('submit', (e) => {
 
 });
 
+// NEEDS TO BE IN FUNCTION I THINK AFTER LOG IN
 let info_tab = document.querySelector('#info_tab');
 let friends_tab = document.querySelector('#tix_tab');
 let info_tabHTML = ``;
@@ -230,34 +230,9 @@ db.collection('Users').get().then((data) =>{
 
 })
 
-
-function openPage(evt, pageName) {
-
-  // Hide all elements with class="tabcontent" by default */
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].classList.remove('is-hidden');
-      tabcontent[i].classList.add("is-active");
-      tabcontent[i].style.display = "none";
-  }
-
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace("is-hidden", " is-active");
-  }
-
-  // Show the specific tab content
-  document.getElementById(pageName).style.display = "block";
-  evt.currentTarget.classList += " is-active"
-}
-
-
-
-
 function showFeed(){
   let content = document.querySelector('#content');
-  let content_html = ``;
+  let content_html = "";
   db.collection("Games").get().then((data) =>{
     let gamedata = data.docs;
     gamedata.forEach((game) =>{
@@ -281,7 +256,7 @@ function showFeed(){
           </div>
           <div class="post_buttons">
               <button id="buy_btn" class="button is-danger is-light is-medium">BUY</button>
-              <button id="buy_btn" class="button is-danger is-light is-medium">SELL</button>
+              <button id="sell_btn" class="button is-danger is-light is-medium">SELL</button>
           </div>
           <div class="price">
               <p>Current Price: 50$</p>
@@ -298,6 +273,29 @@ function showFeed(){
 
 
 }
+
+function openPage(evt, pageName) {
+
+  // Hide all elements with class="tabcontent" by default */
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].classList.remove('is-hidden');
+      tabcontent[i].classList.add("is-active");
+      tabcontent[i].style.display = "none";
+  }
+
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace("is-hidden", " is-active");
+  }
+
+  // Show the specific tab content
+  document.getElementById(pageName).style.display = "block";
+  evt.currentTarget.classList += " is-active"
+}
+
+
 
 function welcome_admin_page(){
   let content = document.querySelector('#main');
