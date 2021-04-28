@@ -6,7 +6,6 @@
 // ** little buggy right now - not sure if its the ordering or the functions or what but buttons on post/view game seem to only
 // work the first time you press them. 
 // 2. Figure out buy/sell buttons - no longer work after making the posts by admin
-// 3. What to show when hit buy/sell button - either modal or how are we matching the buyers and sellers
 // 4. Sport nav button filter the posts by sport type
 // 5. Fix profile nav tab - Idk if should get ride of profile image or what.
 // 6. Anything else? 
@@ -282,6 +281,13 @@ function myBuyFunction(game_ID){
   //})
 
 }
+function mySellFunction(game_ID){
+
+  // need to decide if same modal/function as buy
+
+  
+
+}
 
 let submit_buy = document.querySelector('#submit_buy');
 // submit_buy.addEventListener('click', () =>{
@@ -304,11 +310,6 @@ let submit_buy = document.querySelector('#submit_buy');
 // })
 
 
-
-
-
-// testing firebase 
-// console.log(firebase);
 
 // login
 let login_button = document.querySelector("#login_button");
