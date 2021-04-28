@@ -64,8 +64,6 @@ function welcome_admin_page(){
       if(user.data().id == auth.currentUser.uid && user.data().admin == true){
         let button_post= document.querySelector('#admin_post');
         let admin_view= document.querySelector('#admin_view');
-        console.log("AM I getting this button" , button_post);
-
 
         button_post.classList.remove('is-hidden');
         admin_view.classList.remove('is-hidden');
@@ -267,47 +265,152 @@ function myBuyFunction(game_ID){
         meeting_HTML += `  <p><input name = "locations2" id = "mem" type = "checkbox" value = "memU">${loc}</p>`;
 
       })
-      meeting_HTML +=`</div>
-      <div class="field is-grouped">
-          <div class="control">
-           <p> <button id = "submit_buy" class="button is-danger is-light is-medium">Submit</button></p>
-          </div>
-        </div>`;
+      // meeting_HTML +=`</div>
+      // <div class="field is-grouped">
+      //     <div class="control">
+      //      <p> <button id = "submit_buy" class="button is-danger is-light is-medium">Submit</button></p>
+      //     </div>
+      //   </div>`;
 
       meetinglocation.innerHTML = meeting_HTML;
 
     })
 
-  //})
+  
+  let submit_buy = document.querySelector('#submit_buy');
+  submit_buy.addEventListener('click', () =>{
+  let checks = document.getElementsByName('locations2');
+  let locations2 = [];
+  for (var checkbox of checks){
+    if(checkbox.checked){
+      locations2.push(checkbox.value);
+      
+    }
+  }
+
+  let tix_content = {
+    locations: locations2,
+    buyer: auth.currentUser.uid,
+    seller: false,
+    game_ID: game_ID,
+    price: ""
+  }
+   db.collection("Ticket").add(tix_content).then((data)=>{
+     console.log("ticket added to ticket db");
+
+   })
+   let buy_sell_modal = document.querySelector('#buy_sell_modal');
+   buy_sell_modal.classList.add('is-hidden');
+
+
+  findSeller(game_ID, tix_content.seller);
+})
+
 
 }
-function mySellFunction(game_ID){
 
-  // need to decide if same modal/function as buy
+
+function mySellFunction(game_ID){
+  console.log("Hello", game_ID);
+  let meetinglocation = document.querySelector('#meetinglocation');
+  console.log(meetinglocation);
+  let meeting_HTML = '';
+  var buy_btn = document.querySelectorAll('#buy_btn');
+  buy_btn.forEach(buy => {
+    //console.log(buy.parentNode.parentNode.parentNode.id, buy.parentNode.parentNode.parentNode);
+    //console.log(buy, "buy button");
+    var buy_sell_modal = document.querySelector('#buy_sell_modal');
+    buy_sell_modal.classList.add('is-active');
+
+  })
+    db.collection('Games').doc(game_ID).get().then((data)=>{
+      let info = data.data();
+      meeting_HTML += 
+     ` <div class= "field">
+              <label id = "" class = "has-text-white label">Select meeting locations</label>
+        `
+      info.locations.forEach(loc => {
+        meeting_HTML += `  <p><input name = "locations2" id = "mem" type = "checkbox" value = "memU">${loc}</p>`;
+
+      })
+      
+      meetinglocation.innerHTML = meeting_HTML;
+
+    })
 
   
+  let submit_buy = document.querySelector('#submit_buy');
+  submit_buy.addEventListener('click', () =>{
+  let checks = document.getElementsByName('locations2');
+  let locations2 = [];
+  for (var checkbox of checks){
+    if(checkbox.checked){
+      locations2.push(checkbox.value);
+      
+    }
+  }
+
+  let tix_content = {
+    locations: locations2,
+    buyer: false,
+    seller: auth.currentUser.uid,
+    game_ID: game_ID,
+    price: ""
+  }
+   db.collection("Ticket").add(tix_content).then((data)=>{
+     console.log("ticket added to ticket db");
+
+   })
+   let buy_sell_modal = document.querySelector('#buy_sell_modal');
+   buy_sell_modal.classList.add('is-hidden');
+   match(game_ID);
+})
+  // need to decide if same modal/function as buy
+
+
 
 }
 
-let submit_buy = document.querySelector('#submit_buy');
-// submit_buy.addEventListener('click', () =>{
-//   let checks = document.getElementsByName('locations2');
-//   let locations2 = [];
-//   for (var checkbox of checks){
-//     if(checkbox.checked){
-//       locations2.push(checkbox.value);
-      
-//     }
-//   }
+function findSeller(game_ID, seller){
+  console.log("Start of match", game_ID,seller);
+  db.collection('Ticket').where("game_ID", "==", game_ID).where(seller, "!=", false).get().then((data)=>{
+    let tix = data.docs;
+    tix.forEach(t =>{
+      console.log(t);
 
-//   let tix_content = {
-//     locations: locations2,
-//     buyer: user.currentUser.uid
-//   }
-//   console.log(tix_content);
+    })
+
+  })
+  
+  
+  
+  
+  // get().then((data)=>{
 
 
-// })
+
+
+  //   let games = data.docs;
+  //   games.forEach( g =>{
+  //     if (g.data().seller != false){
+  //       ///alert("We have found you a tix");
+  //       console.log("Found you a seller", g.data());
+       
+  //      return;
+
+  //     }
+  //     if (g.data().buyer != false){
+  //       ///alert("We have found you a tix");
+  //       console.log("Found you a buyer", g.data());
+  //       return;
+  //     }
+
+  //   })
+  // })
+  // console.log("end of match")
+
+
+}
 
 
 
