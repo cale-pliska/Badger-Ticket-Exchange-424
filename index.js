@@ -18,7 +18,7 @@ function configureNav(user) {
   if (user) {
     // show all the logged in links
     loggedinlinks.forEach((link) => {
-    link.classList.remove("is-hidden");
+      link.classList.remove("is-hidden");
     });
     // hide all the logged out links
     loggedoutlinks.forEach((link) => {
@@ -56,27 +56,27 @@ function showSlides() {
 }
 
 
-function welcome_admin_page(){
+function welcome_admin_page() {
   let content = document.querySelector('#main');
-  db.collection('Users').get().then((data) =>{
+  db.collection('Users').get().then((data) => {
     let userdata = data.docs;
-    userdata.forEach((user) =>{
-      if(user.data().id == auth.currentUser.uid && user.data().admin == true){
-        let button_post= document.querySelector('#admin_post');
-        let admin_view= document.querySelector('#admin_view');
+    userdata.forEach((user) => {
+      if (user.data().id == auth.currentUser.uid && user.data().admin == true) {
+        let button_post = document.querySelector('#admin_post');
+        let admin_view = document.querySelector('#admin_view');
 
 
         button_post.classList.remove('is-hidden');
         admin_view.classList.remove('is-hidden');
 
-        admin_view.addEventListener('click',() =>{
+        admin_view.addEventListener('click', () => {
           showFeed();
         })
 
 
         let html = '<h1 class="title is-size-3">Post an upcoming Game</h1>';
-        html += 
-        `
+        html +=
+          `
         <div class = columns>
           <div class = "column is-7">
             <div class = "field">
@@ -144,7 +144,7 @@ function welcome_admin_page(){
         `;
         //let submitGameForm = document.querySelector('#submit_post');
         let submitGameForm = document.querySelector('#submitGameForm');
-        button_post.addEventListener('click', ()=>{
+        button_post.addEventListener('click', () => {
           document.querySelector('#content').classList.add('is-hidden');
           submitGameForm.innerHTML = html;
         })
@@ -155,19 +155,19 @@ function welcome_admin_page(){
 }
 
 
-function showFeed(){
+function showFeed() {
   let content = document.querySelector('#content');
   let content_html = "";
-  db.collection("Games").get().then((data) =>{
+  db.collection("Games").get().then((data) => {
     let gamedata = data.docs;
-    gamedata.forEach((game) =>{
+    gamedata.forEach((game) => {
       let post = game.data();
       let ID = game.id;
       let str_day = post.date + " " + post.time;
       let day = Date.parse(str_day);
       day = new Date(day).toString()
-      full_date = day.slice(4,15);
-      day = day.toUpperCase().slice(0,3);
+      full_date = day.slice(4, 15);
+      day = day.toUpperCase().slice(0, 3);
       format_full = `${full_date.slice(0,3).toUpperCase()} ${full_date.slice(4,6)}, ${full_date.slice(7,11)}`;
 
       let newGame = `
@@ -181,8 +181,8 @@ function showFeed(){
               <p>${format_full}</p>
           </div>
           <div class="post_buttons">
-              <button onclick = "myBuyFunction(\``+ ID+ `\`)" id="buy_btn" class="button is-danger is-light is-medium">BUY</button>
-              <button onclick = "mySellFunction(\``+ ID+ `\`)" id="sell_btn" class="button is-danger is-light is-medium">SELL</button>
+              <button onclick = "myBuyFunction(\`` + ID + `\`)" id="buy_btn" class="button is-danger is-light is-medium">BUY</button>
+              <button onclick = "mySellFunction(\`` + ID + `\`)" id="sell_btn" class="button is-danger is-light is-medium">SELL</button>
           </div>
           <div class="price">
               <p>Current Price: 50$</p>
@@ -200,25 +200,25 @@ function showFeed(){
 
 }
 
-function tabInfo(){
+function tabInfo() {
   let info_tab = document.querySelector('#info_tab');
   let friends_tab = document.querySelector('#tix_tab');
   let info_tabHTML = ``;
   let friends_tabHTML = ``;
-  db.collection('Users').get().then((data) =>{
+  db.collection('Users').get().then((data) => {
     let mydata = data.docs;
-    mydata.forEach((user) =>{
-      if (user.data().id == auth.currentUser.uid){
+    mydata.forEach((user) => {
+      if (user.data().id == auth.currentUser.uid) {
         info_tabHTML += ` <p class = "has-text-weight-bold has-text-white"><b>Name: </b> ${user.data().fName} ${user.data().lName}</p>`;
-        info_tabHTML +=` <p class = "has-text-weight-bold has-text-white"><b>Username:</b> ${user.data().username}</p>`;
+        info_tabHTML += ` <p class = "has-text-weight-bold has-text-white"><b>Username:</b> ${user.data().username}</p>`;
         info_tabHTML += `<p class = "has-text-weight-bold has-text-white"><b>Email:</b> ${user.data().email}</p>`;
         info_tab.innerHTML = info_tabHTML;
       }
-  
+
     })
-  
+
   })
-  }
+}
 
 
 function openPage(evt, pageName) {
@@ -226,14 +226,14 @@ function openPage(evt, pageName) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].classList.remove('is-hidden');
-      tabcontent[i].classList.add("is-active");
-      tabcontent[i].style.display = "none";
+    tabcontent[i].classList.remove('is-hidden');
+    tabcontent[i].classList.add("is-active");
+    tabcontent[i].style.display = "none";
   }
 
   tablinks = document.getElementsByClassName("tablinks");
   for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace("is-hidden", " is-active");
+    tablinks[i].className = tablinks[i].className.replace("is-hidden", " is-active");
   }
 
   // Show the specific tab content
@@ -243,8 +243,8 @@ function openPage(evt, pageName) {
 
 
 
-function myBuyFunction(game_ID){
-  
+function myBuyFunction(game_ID) {
+
   console.log("Hello", game_ID);
   let meetinglocation = document.querySelector('#meetinglocation');
   console.log(meetinglocation);
@@ -257,63 +257,83 @@ function myBuyFunction(game_ID){
     buy_sell_modal.classList.add('is-active');
 
   })
-    db.collection('Games').doc(game_ID).get().then((data)=>{
-      let info = data.data();
-      meeting_HTML += 
-     ` <div class= "field">
+  db.collection('Games').doc(game_ID).get().then((data) => {
+    let info = data.data();
+    meeting_HTML +=
+      ` <div class= "field">
               <label id = "" class = "has-text-white label">Select meeting locations</label>
         `
-      info.locations.forEach(loc => {
-        meeting_HTML += `  <p><input name = "locations2" id = "mem" type = "checkbox" value = "${loc}">${loc}</p>`;
-
-      })
-      // meeting_HTML +=`</div>
-      // <div class="field is-grouped">
-      //     <div class="control">
-      //      <p> <button id = "submit_buy" class="button is-danger is-light is-medium">Submit</button></p>
-      //     </div>
-      //   </div>`;
-
-      meetinglocation.innerHTML = meeting_HTML;
+    info.locations.forEach(loc => {
+      meeting_HTML += `  <p><input name = "locations2" id = "mem" type = "checkbox" value = "${loc}">${loc}</p>`;
 
     })
+    // meeting_HTML +=`</div>
+    // <div class="field is-grouped">
+    //     <div class="control">
+    //      <p> <button id = "submit_buy" class="button is-danger is-light is-medium">Submit</button></p>
+    //     </div>
+    //   </div>`;
 
-  
+    meetinglocation.innerHTML = meeting_HTML;
+
+  })
+
+
   let submit_buy = document.querySelector('#submit_buy');
-  submit_buy.addEventListener('click', () =>{
-  let checks = document.getElementsByName('locations2');
-  let locations2 = [];
-  for (var checkbox of checks){
-    if(checkbox.checked){
-      locations2.push(checkbox.value);
-      
+  submit_buy.addEventListener('click', () => {
+    let checks = document.getElementsByName('locations2');
+    let locations2 = [];
+    for (var checkbox of checks) {
+      if (checkbox.checked) {
+        locations2.push(checkbox.value);
+
+      }
     }
-  }
 
-  let tix_content = {
-    locations: locations2,
-    buyer: auth.currentUser.uid,
-    seller: false,
-    game_ID: game_ID,
-    price: "",
-    status: "Pending"
-  }
-   db.collection("Ticket").add(tix_content).then((data)=>{
-     console.log("ticket added to ticket db");
+    let tix_content = {
+      locations: locations2,
+      buyer: auth.currentUser.uid,
+      seller: false,
+      game_ID: game_ID,
+      price: "",
+      status: "pending"
+    }
+    db.collection("Ticket").add(tix_content).then((data) => { //add this further down
+      console.log("ticket added to ticket db", tix_content);
 
-   })
-   let buy_sell_modal = document.querySelector('#buy_sell_modal');
-   buy_sell_modal.classList.add('is-hidden');
+    })
+    let buy_sell_modal = document.querySelector('#buy_sell_modal');
+    buy_sell_modal.classList.add('is-hidden');
 
+    //finding the match
+    db.collection('Ticket').where("game_ID", "==", game_ID).get().then((data) => {
+      let tix = data.docs;
+      console.log(tix)
+      tix.forEach((t) => {
+        new_t = t.data() //this is the sellers data
+        new_t.id = t.id //adding the id because we need this!
 
-  findSeller(game_ID);
-})
+        if ((t.data().seller != false) && (t.data().status == "pending")) {
+          new_t.status = tix_content.buyer; //adding the buyer to the seller's data
+          // console.log(new_t,'the id for t is ', t.id);
+          //push the new seller data to the database
+          db.collection('Ticket').doc(t.id).set(new_t).then((data) => {
+            console.log("found a seller! and ticket added to the ticket db", new_t);
+          })
+        } else { //add the non-adjusted data to the ticket database
+          db.collection("Ticket").doc(t.id).set(new_t).then((data) => {
+            console.log("Didn't find a seller :( and ticket added to the ticket db", new_t);
+          })
+        }
+      })
+      //change status from pending to the partnering id for buyer and seller
 
-
+    })
+  })
 }
 
 
-function mySellFunction(game_ID){
+function mySellFunction(game_ID) {
   console.log("Hello", game_ID);
   let meetinglocation = document.querySelector('#meetinglocation');
   console.log(meetinglocation);
@@ -326,84 +346,108 @@ function mySellFunction(game_ID){
     buy_sell_modal.classList.add('is-active');
 
   })
-    db.collection('Games').doc(game_ID).get().then((data)=>{
-      let info = data.data();
-      meeting_HTML += 
-     ` <div class= "field">
+  db.collection('Games').doc(game_ID).get().then((data) => {
+    let info = data.data();
+    meeting_HTML +=
+      ` <div class= "field">
               <label id = "" class = "has-text-white label">Select meeting locations</label>
         `
-      info.locations.forEach(loc => {
-        meeting_HTML += `  <p><input name = "locations2" id = "mem" type = "checkbox" value = "memU">${loc}</p>`;
-
-      })
-      
-      meetinglocation.innerHTML = meeting_HTML;
+    info.locations.forEach(loc => {
+      meeting_HTML += `  <p><input name = "locations2" id = "mem" type = "checkbox" value = "${loc}">${loc}</p>`;
 
     })
 
-  
+    meetinglocation.innerHTML = meeting_HTML;
+
+  })
+
+
   let submit_buy = document.querySelector('#submit_buy');
-  submit_buy.addEventListener('click', () =>{
-  let checks = document.getElementsByName('locations2');
-  let locations2 = [];
-  for (var checkbox of checks){
-    if(checkbox.checked){
-      locations2.push(checkbox.value);
-      
+  submit_buy.addEventListener('click', () => {
+    let checks = document.getElementsByName('locations2');
+    let locations2 = [];
+    for (var checkbox of checks) {
+      if (checkbox.checked) {
+        locations2.push(checkbox.value);
+
+      }
     }
-  }
 
-  let tix_content = {
-    locations: locations2,
-    buyer: false,
-    seller: auth.currentUser.uid,
-    game_ID: game_ID,
-    price: ""
-  }
-   db.collection("Ticket").add(tix_content).then((data)=>{
-     console.log("ticket added to ticket db");
+    let tix_content = {
+      locations: locations2,
+      buyer: false,
+      seller: auth.currentUser.uid,
+      game_ID: game_ID,
+      price: "",
+      status: "pending"
+    }
 
-   })
-   let buy_sell_modal = document.querySelector('#buy_sell_modal');
-   buy_sell_modal.classList.add('is-hidden');
-   findBuyer(game_ID);
-})
+    db.collection("Ticket").add(tix_content).then((data) => { //add this further down
+      console.log("ticket added to ticket db", tix_content);
+
+    })
+
+    db.collection("Ticket").get(tix_content).then((data) => {
+
+      
+      let tix = data.docs;
+      console.log(tix)
+      tix.forEach((t) => {
+        new_t = t.data() //this is the sellers data
+        new_t.id = t.id //adding the id because we need this!
+
+        if ((t.data().seller != false) && (t.data().status == "pending")) {
+          // new_t.status = tix_content.buyer; //adding the buyer to the seller's data
+
+          //push the new seller data to the database
+          db.collection('Ticket').doc(t.id).set(new_t).then((data) => {
+            console.log("found a seller! and ticket added to the ticket db", new_t);
+          })
+        }
+        else { //add the non-adjusted data to the ticket database
+          db.collection("Ticket").doc(t.id).set(new_t).then((data) => {
+            console.log("Didn't find a seller :( and ticket added to the ticket db", new_t);
+          })
+        }
+      })
+      //change status from pending to the partnering id for buyer and seller
+      
+
+
+
+
+    })
+
+    let buy_sell_modal = document.querySelector('#buy_sell_modal');
+    buy_sell_modal.classList.add('is-hidden');
+    findBuyer(game_ID);
+  })
   // need to decide if same modal/function as buy
 
 
 
 }
 
-function findSeller(game_ID, seller){
-  console.log("Start of match", game_ID,seller);
-  db.collection('Ticket').where("game_ID", "==", game_ID).get().then((data)=>{
+function findSeller(game_ID) {
+
+  //return data for seller on the match
+}
+
+function findBuyer(game_ID, seller) {
+  console.log("Start of match", game_ID, seller);
+  db.collection('Ticket').where("game_ID", "==", game_ID).get().then((data) => {
     let tix = data.docs;
-    tix.forEach((t) =>{
-      if (t.data().seller != false){
+    tix.forEach((t) => {
+      if (t.data().buyer != false) {
         console.log(t.data());
 
-        // list of people who can  to sell to the buyer who just clicked buy
+        // list of people who can buy from to the seller who just clicked buy
       }
 
     })
 
   })
 }
-  function findBuyer(game_ID, seller){
-    console.log("Start of match", game_ID,seller);
-    db.collection('Ticket').where("game_ID", "==", game_ID).get().then((data)=>{
-      let tix = data.docs;
-      tix.forEach((t) =>{
-        if (t.data().buyer != false){
-          console.log(t.data());
-  
-          // list of people who can buy from to the seller who just clicked buy
-        }
-  
-      })
-  
-    })
-  }
 
 
 //modals
@@ -515,44 +559,44 @@ signup_form.addEventListener('submit', (e) => {
   let admin = document.querySelector('input[name="user_type"]:checked').value;
   let user_type = false;
   // user_type is true == Admin otherwise is student == false
-  if (admin == 1){
+  if (admin == 1) {
     user_type = true;
   }
-  
+
   // console.log(email, password);
 
   // pass the email and password to firebase
   auth.createUserWithEmailAndPassword(email, password).then((userCredentials) => {
-    console.log("created user successfully!");
+      console.log("created user successfully!");
 
-    user = {
-      fName:fName,
-      lName: lName,
-      username: username,
-      id: userCredentials.user.uid,
-      email: email,
-      admin: user_type
-    };
+      user = {
+        fName: fName,
+        lName: lName,
+        username: username,
+        id: userCredentials.user.uid,
+        email: email,
+        admin: user_type
+      };
 
-    db.collection("Users").add(user).then((data) =>{
-      console.log("User added to database");
+      db.collection("Users").add(user).then((data) => {
+        console.log("User added to database");
+      })
+      my_sign_up_modal.classList.remove('is-active');
+      showFeed();
+
+      // reset form
+      signup_form.reset();
+
     })
-    my_sign_up_modal.classList.remove('is-active');
-    showFeed();
+    .catch((error) => {
+      let signup_error = document.querySelector("#signup_error");
+      signup_error.innerHTML = `<p>${error.message}</p>`;
 
-    // reset form
-    signup_form.reset();
-
-  })
-  .catch((error) => {
-    let signup_error = document.querySelector("#signup_error");
-    signup_error.innerHTML = `<p>${error.message}</p>`;
-
-  });
+    });
 
 });
 
-submitGameForm.addEventListener('submit', (e)=>{
+submitGameForm.addEventListener('submit', (e) => {
   e.preventDefault();
   let sport = document.querySelector('#sport').value;
   let date = document.querySelector('#gameDate').value;
@@ -560,10 +604,10 @@ submitGameForm.addEventListener('submit', (e)=>{
   let opponent = document.querySelector('#opponent').value;
   let checks = document.getElementsByName('locations');
   let locations = [];
-  for (var checkbox of checks){
-    if(checkbox.checked){
+  for (var checkbox of checks) {
+    if (checkbox.checked) {
       locations.push(checkbox.value);
-      
+
     }
   }
 
@@ -571,11 +615,11 @@ submitGameForm.addEventListener('submit', (e)=>{
   let game_content = {
     sport: sport,
     date: date,
-    time:time,
+    time: time,
     opp: opponent,
     locations: locations
   }
-  db.collection("Games").add(game_content).then((data) =>{
+  db.collection("Games").add(game_content).then((data) => {
     console.log(game_content, ": Game added to db");
     submitGameForm.classList.add('is-hidden');
     let content = document.querySelector('#content');
@@ -651,8 +695,7 @@ auth.onAuthStateChanged((user) => {
     welcome_admin_page();
     tabInfo();
     showFeed();
-  }
-  else {
+  } else {
     console.log("user is now signed out");
     configureNav(user);
   }
