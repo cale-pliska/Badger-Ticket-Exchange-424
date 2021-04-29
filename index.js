@@ -264,7 +264,7 @@ function myBuyFunction(game_ID){
               <label id = "" class = "has-text-white label">Select meeting locations</label>
         `
       info.locations.forEach(loc => {
-        meeting_HTML += `  <p><input name = "locations2" id = "mem" type = "checkbox" value = "memU">${loc}</p>`;
+        meeting_HTML += `  <p><input name = "locations2" id = "mem" type = "checkbox" value = "${loc}">${loc}</p>`;
 
       })
       // meeting_HTML +=`</div>
@@ -295,7 +295,8 @@ function myBuyFunction(game_ID){
     buyer: auth.currentUser.uid,
     seller: false,
     game_ID: game_ID,
-    price: ""
+    price: "",
+    status: "Pending"
   }
    db.collection("Ticket").add(tix_content).then((data)=>{
      console.log("ticket added to ticket db");
@@ -405,7 +406,7 @@ function findSeller(game_ID, seller){
   }
 
 
-
+//modals
 
 // login
 let login_button = document.querySelector("#login_button");
@@ -496,7 +497,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-
 
 
 // signup users and add them to the firebase database.
