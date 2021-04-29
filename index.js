@@ -296,37 +296,77 @@ function myBuyFunction(game_ID) {
       seller: false,
       game_ID: game_ID,
       price: "",
-      status: "pending"
+      status: "pending",
+      id: ""
     }
-    db.collection("Ticket").add(tix_content).then((data) => { //add this further down
-      console.log("ticket added to ticket db", tix_content);
+    db.collection("Ticket").add(tix_content).then((data) => {
+      //get the fricken id here
 
+      console.log("ticket added to ticket db", tix_content);
     })
+
     let buy_sell_modal = document.querySelector('#buy_sell_modal');
     buy_sell_modal.classList.add('is-hidden');
+
+    cur_id = ""
 
     //finding the match
     db.collection('Ticket').where("game_ID", "==", game_ID).get().then((data) => {
       let tix = data.docs;
-      console.log(tix)
+
+      //add id's
       tix.forEach((t) => {
-        new_t = t.data() //this is the sellers data
-        new_t.id = t.id //adding the id because we need this!
+        console.log(t.data())
+        if (t.data().id=="") {
+          new_t = t.data()
+          new_t.id = t.id
+          db.collection("Ticket").doc(t.id).set(new_t)
+          cur_id = new_t.id
+
+        }
+
+      })
+
+      console.log("current id is ", cur_id);
+
+
+
+      tix.forEach((t) => {
+        new_t = t.data()
+        new_t.id = t.id //adding the id for buyer and seller because we need this!
 
         if ((t.data().seller != false) && (t.data().status == "pending")) {
+
+          //found a match
+
+          //update buyers data
+          //get data at the right id
+          db.collection('Ticket').doc(cur_id).get().then((data) => {
+            console.log(data.data())
+            buy_new = data.data()
+            buy_new.status = t.data().seller //sellers id
+            console.log("bowser", buy_new)
+            db.collection("Ticket").doc(cur_id).set(buy_new).then((data) => {
+              console.log("updated buyers records! ", buy_new)
+            })
+
+          })
+
           new_t.status = tix_content.buyer; //adding the buyer to the seller's data
           // console.log(new_t,'the id for t is ', t.id);
+
           //push the new seller data to the database
           db.collection('Ticket').doc(t.id).set(new_t).then((data) => {
             console.log("found a seller! and ticket added to the ticket db", new_t);
           })
-        } else { //add the non-adjusted data to the ticket database
+        }
+
+        else { //add the non-adjusted data to the ticket database
           db.collection("Ticket").doc(t.id).set(new_t).then((data) => {
             console.log("Didn't find a seller :( and ticket added to the ticket db", new_t);
           })
         }
       })
-      //change status from pending to the partnering id for buyer and seller
 
     })
   })
