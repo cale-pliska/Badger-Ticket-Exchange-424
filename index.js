@@ -65,8 +65,10 @@ function welcome_admin_page(){
         let button_post= document.querySelector('#admin_post');
         let admin_view= document.querySelector('#admin_view');
 
+
         button_post.classList.remove('is-hidden');
         admin_view.classList.remove('is-hidden');
+
         admin_view.addEventListener('click',() =>{
           showFeed();
         })
@@ -303,7 +305,7 @@ function myBuyFunction(game_ID){
    buy_sell_modal.classList.add('is-hidden');
 
 
-  findSeller(game_ID, tix_content.seller);
+  findSeller(game_ID);
 })
 
 
@@ -363,7 +365,7 @@ function mySellFunction(game_ID){
    })
    let buy_sell_modal = document.querySelector('#buy_sell_modal');
    buy_sell_modal.classList.add('is-hidden');
-   match(game_ID);
+   findBuyer(game_ID);
 })
   // need to decide if same modal/function as buy
 
@@ -373,44 +375,35 @@ function mySellFunction(game_ID){
 
 function findSeller(game_ID, seller){
   console.log("Start of match", game_ID,seller);
-  db.collection('Ticket').where("game_ID", "==", game_ID).where(seller, "!=", false).get().then((data)=>{
+  db.collection('Ticket').where("game_ID", "==", game_ID).get().then((data)=>{
     let tix = data.docs;
-    tix.forEach(t =>{
-      console.log(t);
+    tix.forEach((t) =>{
+      if (t.data().seller != false){
+        console.log(t.data());
+
+        // list of people who can  to sell to the buyer who just clicked buy
+      }
 
     })
 
   })
-  
-  
-  
-  
-  // get().then((data)=>{
-
-
-
-
-  //   let games = data.docs;
-  //   games.forEach( g =>{
-  //     if (g.data().seller != false){
-  //       ///alert("We have found you a tix");
-  //       console.log("Found you a seller", g.data());
-       
-  //      return;
-
-  //     }
-  //     if (g.data().buyer != false){
-  //       ///alert("We have found you a tix");
-  //       console.log("Found you a buyer", g.data());
-  //       return;
-  //     }
-
-  //   })
-  // })
-  // console.log("end of match")
-
-
 }
+  function findBuyer(game_ID, seller){
+    console.log("Start of match", game_ID,seller);
+    db.collection('Ticket').where("game_ID", "==", game_ID).get().then((data)=>{
+      let tix = data.docs;
+      tix.forEach((t) =>{
+        if (t.data().buyer != false){
+          console.log(t.data());
+  
+          // list of people who can buy from to the seller who just clicked buy
+        }
+  
+      })
+  
+    })
+  }
+
 
 
 
