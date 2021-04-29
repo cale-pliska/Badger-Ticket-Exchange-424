@@ -314,10 +314,10 @@ function myBuyFunction(game_ID) {
     db.collection('Ticket').where("game_ID", "==", game_ID).get().then((data) => {
       let tix = data.docs;
 
-      //add id's
+      //add id's bc firestore is soup
       tix.forEach((t) => {
         console.log(t.data())
-        if (t.data().id=="") {
+        if (t.data().id == "") {
           new_t = t.data()
           new_t.id = t.id
           db.collection("Ticket").doc(t.id).set(new_t)
@@ -330,14 +330,22 @@ function myBuyFunction(game_ID) {
       console.log("current id is ", cur_id);
 
 
-
+      //finding matches and adjusting the database assuming fixed price right now
       tix.forEach((t) => {
         new_t = t.data()
-        new_t.id = t.id //adding the id for buyer and seller because we need this!
+        new_t.id = t.id
 
         if ((t.data().seller != false) && (t.data().status == "pending")) {
 
           //found a match
+
+          new_t.status = tix_content.buyer; //adding the buyer to the seller's data
+          // console.log(new_t,'the id for t is ', t.id);
+
+          //updating the sellers data
+          db.collection('Ticket').doc(t.id).set(new_t).then((data) => {
+            console.log("found a seller! and ticket added to the ticket db", new_t);
+          })
 
           //update buyers data
           //get data at the right id
@@ -351,17 +359,7 @@ function myBuyFunction(game_ID) {
             })
 
           })
-
-          new_t.status = tix_content.buyer; //adding the buyer to the seller's data
-          // console.log(new_t,'the id for t is ', t.id);
-
-          //push the new seller data to the database
-          db.collection('Ticket').doc(t.id).set(new_t).then((data) => {
-            console.log("found a seller! and ticket added to the ticket db", new_t);
-          })
-        }
-
-        else { //add the non-adjusted data to the ticket database
+        } else { //add the non-adjusted data to the ticket database
           db.collection("Ticket").doc(t.id).set(new_t).then((data) => {
             console.log("Didn't find a seller :( and ticket added to the ticket db", new_t);
           })
@@ -403,6 +401,7 @@ function mySellFunction(game_ID) {
 
 
   let submit_buy = document.querySelector('#submit_buy');
+
   submit_buy.addEventListener('click', () => {
     let checks = document.getElementsByName('locations2');
     let locations2 = [];
@@ -429,7 +428,7 @@ function mySellFunction(game_ID) {
 
     db.collection("Ticket").get(tix_content).then((data) => {
 
-      
+
       let tix = data.docs;
       console.log(tix)
       tix.forEach((t) => {
@@ -451,21 +450,94 @@ function mySellFunction(game_ID) {
         }
       })
       //change status from pending to the partnering id for buyer and seller
-      
-
-
-
-
     })
 
-    let buy_sell_modal = document.querySelector('#buy_sell_modal');
-    buy_sell_modal.classList.add('is-hidden');
-    findBuyer(game_ID);
-  })
-  // need to decide if same modal/function as buy
+    //data
+
+    // let tix_content = {
+    //   locations: locations2,
+    //   buyer: false,
+    //   seller: auth.currentUser.uid,
+    //   game_ID: game_ID,
+    //   price: "",
+    //   status: "pending",
+    //   id: ""
+    // }
+    // db.collection("Ticket").add(tix_content).then((data) => {
+
+    //   console.log("ticket added to ticket db", tix_content);
+    // })
+
+    // let buy_sell_modal = document.querySelector('#buy_sell_modal');
+    // buy_sell_modal.classList.add('is-hidden');
+
+    // cur_id = ""
+
+    // //finding the match
+    // db.collection('Ticket').where("game_ID", "==", game_ID).get().then((data) => {
+    //   let tix = data.docs;
+
+    //   //add id's bc firestore is soup
+    //   tix.forEach((t) => {
+    //     console.log(t.data())
+    //     if (t.data().id == "") {
+    //       new_t = t.data()
+    //       new_t.id = t.id
+    //       db.collection("Ticket").doc(t.id).set(new_t)
+    //       cur_id = new_t.id
+
+    //     }
+
+    //   })
+
+    //   console.log("current id is ", cur_id);
+
+
+    //   //finding matches and adjusting the database assuming fixed price right now
+    //   tix.forEach((t) => {
+    //     new_t = t.data()
+    //     new_t.id = t.id
+
+    //     if ((t.data().seller != false) && (t.data().status == "pending")) {
+
+    //       //found a match
+
+    //       new_t.status = tix_content.buyer; //adding the buyer to the seller's data
+    //       // console.log(new_t,'the id for t is ', t.id);
+
+    //       //push the new seller data to the database
+    //       db.collection('Ticket').doc(t.id).set(new_t).then((data) => {
+    //         console.log("found a buyer! and ticket added to the ticket db", new_t);
+    //       })
+
+    //       //update buyers data
+    //       //get data at the right id
+    //       db.collection('Ticket').doc(cur_id).get().then((data) => {
+    //         console.log(data.data())
+    //         buy_new = data.data()
+    //         buy_new.status = t.data().seller //sellers id
+    //         console.log("sssss", buy_new)
+    //         db.collection("Ticket").doc(cur_id).set(buy_new).then((data) => {
+    //           console.log("updated seller records! ", buy_new)
+    //         })
+
+    //       })
+    //     } else { //add the non-adjusted data to the ticket database
+    //       db.collection("Ticket").doc(t.id).set(new_t).then((data) => {
+    //         console.log("Didn't find a buyer :( and ticket added to the ticket db", new_t);
+    //       })
+    //     }
+    //   })
+
+      let buy_sell_modal = document.querySelector('#buy_sell_modal');
+      buy_sell_modal.classList.add('is-hidden');
+      findBuyer(game_ID);
+    })
+    // need to decide if same modal/function as buy
 
 
 
+  // })
 }
 
 function findSeller(game_ID) {
