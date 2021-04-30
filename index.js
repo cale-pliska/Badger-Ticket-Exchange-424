@@ -13,6 +13,8 @@
 let loggedoutlinks = document.querySelectorAll(".loggedout");
 let loggedinlinks = document.querySelectorAll(".loggedin");
 
+
+
 function configureNav(user) {
   // check if user is passed to function (signed in)
   if (user) {
@@ -241,14 +243,47 @@ function openPage(evt, pageName) {
   evt.currentTarget.classList += " is-active"
 }
 
+function display_match_details(match_details) {
+  let match_r_html = document.querySelector("#match_results")
+  var cur_user = match_details["cur_user"]
+  var gameDetails = match_details["gameDetails"]
+  var match_user = match_details["match_user"]
+  var meetingPlace = match_details["meetingPlace"]
+  var name1 = "Leo"
+  var email1 = "test@test.com"
+
+  //get user name and email
+  db.collection('Users').get().then((data) => {
+    data2 = data.docs;
+    data2.forEach((user) => {
+      
+      // console.log(user.data().id)
+      if (user.data().id == match_user) {
+        console.log(user.data())
+        console.log(user.data().fName) //change to name?
+        name1 = user.data().fName
+        email1 = user.data().email
+      }
+    })
+    match_r_html.innerHTML +=`
+    <p>You have a match!</p>
+    <p>You have been matched with ${name1} (${email1}).  The game id is ${gameDetails}</p>
+    `
+  })
+
+}
 
 
 function myBuyFunction(game_ID) {
 
+  var matchDetails = {}
+
   let meetinglocation = document.querySelector('#meetinglocation');
-  console.log(meetinglocation);
+  // console.log(meetinglocation);
   let meeting_HTML = '';
   var buy_btn = document.querySelectorAll('#buy_btn');
+
+
   buy_btn.forEach(buy => {
     //console.log(buy.parentNode.parentNode.parentNode.id, buy.parentNode.parentNode.parentNode);
     //console.log(buy, "buy button");
@@ -298,6 +333,11 @@ function myBuyFunction(game_ID) {
       status: "pending",
       id: ""
     }
+
+    matchDetails['gameDetails'] = game_ID
+    matchDetails['cur_user'] = auth.currentUser.uid;
+    matchDetails['meetingPlace'] = locations2[0]
+
     db.collection("Ticket").add(tix_content).then((data) => {
       //get the fricken id here
 
@@ -315,7 +355,7 @@ function myBuyFunction(game_ID) {
 
       //add id's bc firestore is soup
       tix.forEach((t) => {
-        console.log(t.data())
+        // console.log(t.data())
         if (t.data().id == "") {
           new_t = t.data()
           new_t.id = t.id
@@ -335,15 +375,16 @@ function myBuyFunction(game_ID) {
         new_t.id = t.id
 
         if ((t.data().seller != false) && (t.data().status == "pending")) {
-
+          matched_user = new_t.seller
           //found a match
-
           new_t.status = tix_content.buyer; //adding the buyer to the seller's data
-          // console.log(new_t,'the id for t is ', t.id);
+          console.log('the seller is ', new_t.seller);
+          matchDetails['match_user'] = new_t.seller;
+
 
           //updating the sellers data 
           db.collection('Ticket').doc(t.id).set(new_t).then((data) => {
-            console.log("found a seller! and ticket added to the ticket db", new_t);
+            // console.log("found a seller! and ticket added to the ticket db", new_t);
           })
 
           //update buyers data
@@ -352,20 +393,39 @@ function myBuyFunction(game_ID) {
             console.log(data.data())
             buy_new = data.data()
             buy_new.status = t.data().seller //sellers id
-            console.log("bowser", buy_new)
+            // console.log("bowser", buy_new)
             db.collection("Ticket").doc(cur_id).set(buy_new).then((data) => {
-              console.log("updated buyers records! ", buy_new)
+              // console.log("updated buyers records! ", buy_new)
             })
+
+            display_match_details(matchDetails);
+
 
           })
         } else { //add the non-adjusted data to the ticket database
           db.collection("Ticket").doc(t.id).set(new_t).then((data) => {
-            console.log("Didn't find a seller :( and ticket added to the ticket db", new_t);
+            // console.log("Didn't find a seller :( and ticket added to the ticket db", new_t);
           })
         }
       })
 
     })
+
+    //get current user
+
+    // temp = {
+    //   cur_user: "R08Zc8Tr6BPcpVEJySkYvISkW8i1",
+    //   gameDetails: "kv04tSrFtA4iZJ5g67td",
+    //   match_user: "R08Zc8Tr6BPcpVEJySkYvISkW8i1",
+    //   meetingPlace: "Business School"
+    // }
+
+    // console.log("***", matchDetails)
+
+    // let match_r_html = document.querySelector("#match_results")
+    // match_r_html.innerHTML = "";
+
+
   })
 }
 
@@ -432,7 +492,7 @@ function mySellFunction(game_ID) {
     cur_id = ""
 
     //finding the match
-    
+
 
     //add id's bc firestore is soup
 
@@ -459,7 +519,7 @@ function mySellFunction(game_ID) {
       console.log("CURRENT id is ", cur_id);
 
       tix.forEach((t) => {
-        new_t = t.data() 
+        new_t = t.data()
         new_t.id = t.id
 
         if ((t.data().buyer != false) && (t.data().status == "pending")) {
@@ -470,7 +530,7 @@ function mySellFunction(game_ID) {
 
           // update the buyers data
           db.collection("Ticket").doc(t.id).set(new_t).then((data) => {
-            console.log("found a buyer! and the ticket added is", new_t)
+            // console.log("found a buyer! and the ticket added is", new_t)
           })
 
           //update sellers data
@@ -480,7 +540,7 @@ function mySellFunction(game_ID) {
             sell_new = data.data()
             sell_new.status = t.data().buyer
             db.collection("Ticket").doc(cur_id).set(sell_new).then((data) => {
-              console.log("updated seller records! ", sell_new)
+              // console.log("updated seller records! ", sell_new)
             })
           })
 
@@ -489,41 +549,18 @@ function mySellFunction(game_ID) {
           // db.collection('Ticket').doc(t.id).set(new_t).then((data) => {
           //   console.log("found a seller! and ticket added to the ticket db", new_t);
           // })
-        }
-        else { //add the non-adjusted data to the ticket database
+        } else { //add the non-adjusted data to the ticket database
           db.collection("Ticket").doc(t.id).set(new_t).then((data) => {
-            console.log("Didn't find a seller :( and ticket added to the ticket db", new_t);
+            // console.log("Didn't find a seller :( and ticket added to the ticket db", new_t);
           })
         }
       })
       //change status from pending to the partnering id for buyer and seller
     })
 
-    })
-
-}
-
-function findSeller(game_ID) {
-
-  //return data for seller on the match
-}
-
-function findBuyer(game_ID, seller) {
-  console.log("Start of match", game_ID, seller);
-  db.collection('Ticket').where("game_ID", "==", game_ID).get().then((data) => {
-    let tix = data.docs;
-    tix.forEach((t) => {
-      if (t.data().buyer != false) {
-        console.log(t.data());
-
-        // list of people who can buy from to the seller who just clicked buy
-      }
-
-    })
-
   })
-}
 
+}
 
 //modals
 
